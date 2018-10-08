@@ -1,0 +1,9 @@
+api manager:
+init:
+	1. get client key + secret from env
+	2. check for valid token from file
+		- if no valid token, request new token
+	3. store token
+request:
+	1. check if token has expired
+	2. if expired, request new token
