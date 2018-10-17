@@ -8,7 +8,8 @@
 const chalk = require('chalk');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
-const res_file = 'spotify_playlists.json';
+const res_file = './api_results/spotify_playlists.json';
+const res_file_additional = './api_results/spotify_playlist_additional.json';
 const limit = 50;
 function playlistRequestConfig(offset) {
 	return {
@@ -19,6 +20,12 @@ function playlistRequestConfig(offset) {
 			offset
 		}
 	};
+}
+function getPlaylistConfig(id) {
+	return {
+		url: `https://api.spotify.com/v1/playlists/${id}`,
+		method: 'get'
+	}
 }
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -38,7 +45,26 @@ const loop = async (api_instance) => {
 	}
 	return result;
 }
-require('./api_manager')
-.then(api_instance => loop(api_instance))
-.then(result => fs.writeFileAsync(res_file, JSON.stringify(result)))
-.catch(err => chalk.red(console.error(err)));
+
+const additional_playlists = [
+	'37i9dQZF1DXarebqD2nAVg', // tender
+ 	'37i9dQZF1DXaJZdVx8Fwkq', // sad vibe
+ 	'37i9dQZF1DXb1IUaS6F7Z8', // celtic punk
+];
+
+const main = async () => {
+	try {
+		//const api_instance = await require('./api_manager');
+		//const first_results = await loop(api_instance);
+		//const second_results = await Promise.map(additional_playlists, (async (id) => (await api_instance.request(getPlaylistConfig(id))).data));
+		//fs.writeFileAsync(res_file, JSON.stringify(first_results.concat(second_results)));
+		//fs.writeFileAsync(res_file_additional, JSON.stringify(second_results));
+	}
+	catch (err) {
+		console.error(chalk.red(err));
+	}
+}
+
+if (require.main === module) {
+	main();
+}

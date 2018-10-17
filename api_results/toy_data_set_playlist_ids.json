@@ -1,0 +1,104 @@
+[
+{
+	"id": "37i9dQZF1DX8tZsk68tuDw",
+	"name": "Dance Rising",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX8tZsk68tuDw/tracks",
+		"total": 98
+	}
+},
+{
+	"id": "37i9dQZF1DX7gIoKXt0gmx",
+	"name": "All The Feels",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX7gIoKXt0gmx/tracks",
+		"total": 66
+	}
+},
+{
+	"id": "37i9dQZF1DX7KNKjOK0o75",
+	"name": "Have a Great Day!",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX7KNKjOK0o75/tracks",
+		"total": 101
+	}
+},
+{
+	"id": "37i9dQZF1DX2FsCLsHeMrM",
+	"name": "Kitchen Swagger",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX2FsCLsHeMrM/tracks",
+		"total": 78
+	}
+},
+{
+	"id": "37i9dQZF1DWSlw12ofHcMM",
+	"name": "Swagger",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DWSlw12ofHcMM/tracks",
+		"total": 95
+	}
+},
+{
+	"id": "37i9dQZF1DXaJZdVx8Fwkq",
+	"name": "Sad Vibe",	
+},
+{
+	"id": "37i9dQZF1DX4E3UdUs7fUx",
+	"name": "Afternoon Acoustic",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX4E3UdUs7fUx/tracks",
+		"total": 86
+	}
+},
+{
+	"id": "37i9dQZF1DXarebqD2nAVg",
+	"name": "Tender",
+},
+{
+	"id": "37i9dQZF1DX0SM0LYsmbMT",
+	"name": "Jazz Vibes",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX0SM0LYsmbMT/tracks",
+		"total": 200
+	}
+},
+{
+	"id": "37i9dQZF1DWVEvzGeX3eRs",
+	"name": "'90s Baby Makers",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DWVEvzGeX3eRs/tracks",
+		"total": 48
+	}
+},
+{
+	"id": "37i9dQZF1DXb1IUaS6F7Z8",
+	"name": "Celtic Punk",
+},
+{
+	"id": "37i9dQZF1DWU2LcZVHsTdv",
+	"name": "Country by the Grace of God",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DWU2LcZVHsTdv/tracks",
+		"total": 51
+	}
+},
+{
+	"id": "37i9dQZF1DX7OIddoQVdRt",
+	"name": "Spread the Gospel",
+	"tracks":
+	{
+		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX7OIddoQVdRt/tracks",
+		"total": 50
+	}
+},
+]
