@@ -1,0 +1,7 @@
+{
+	"username": "playlistr_ml_v1",
+	"password": "plt_210",
+	"host": "localhost",
+	"port": 5432,
+	"db": "playlistr_ml_v1"
+}
