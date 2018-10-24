@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 	const Track = sequelize.define('Track', {
 		disc_number: DataTypes.INTEGER,
 		duration_ms: DataTypes.INTEGER,
-		explicit: DataTypes.BOOLEAN,		
+		explicit: DataTypes.BOOLEAN,
 		href: DataTypes.TEXT,
 		is_playable: DataTypes.BOOLEAN,
 		name: DataTypes.TEXT,
@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
 		//has one album
 		//has many artists
 		// has many available markets
+		Track.hasMany(models.AvailableMarket, {
+			hooks: 'false',
+		});
 		Track.hasMany(models.ExternalUrl, {
 			onDelete: 'cascade',
 			hooks: 'true',
