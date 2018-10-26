@@ -1,33 +1,49 @@
 'use strict';
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Playlists', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.STRING
-      },
-      externalUrl: {
-      	type: Sequelize.UUID,
-      	references: {
-      		model: 'ExternalUrl',
-      		key: 'id',
-      	},
-      	onUpdate: 'CASCADE',
-      	onDelete: 'CASCADE',
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Playlists');
-  }
+	up: (queryInterface, Sequelize) => {
+		return queryInterface.createTable('Playlists', {
+			id: {
+				allowNull: false,
+				autoIncrement: false,
+				primaryKey: true,
+				type: Sequelize.STRING
+			},
+			collaborative: {
+				type: Sequelize.BOOLEAN,
+			},
+			description: {
+				type: Sequelize.TEXT
+			},
+			href: {
+				type: Sequelize.TEXT
+			},
+			name: {
+				type: Sequelize.TEXT,
+				allowNull: false,
+			},
+			public: {
+				type: Sequelize.BOOLEAN,
+			},
+			snapshot_id: {
+				type: Sequelize.TEXT
+			},
+			type: {
+				type: Sequelize.TEXT
+			},
+			uri: {
+				type: Sequelize.TEXT,
+			},
+			createdAt: {
+				allowNull: false,
+				type: Sequelize.DATE
+			},
+			updatedAt: {
+				allowNull: false,
+				type: Sequelize.DATE
+			}
+		});
+	},
+	down: (queryInterface, Sequelize) => {
+		return queryInterface.dropTable('Playlists');
+	}
 };

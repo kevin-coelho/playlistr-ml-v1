@@ -4,8 +4,8 @@
     "password": "plt_210",
     "database": "playlistr_ml_v1",
     "host": "127.0.0.1",
-    "port": "5432",
-    "dialect": "postgres",
+    "port": 5432,
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",

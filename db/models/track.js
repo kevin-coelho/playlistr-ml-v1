@@ -1,12 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Track = sequelize.define('Track', {
-		disc_number: DataTypes.INTEGER,
-		duration_ms: DataTypes.INTEGER,
-		explicit: DataTypes.BOOLEAN,
 		href: DataTypes.TEXT,
 		is_playable: DataTypes.BOOLEAN,
 		name: DataTypes.TEXT,
+		disc_number: DataTypes.INTEGER,
+		duration_ms: DataTypes.INTEGER,
+		explicit: DataTypes.BOOLEAN,
 		popularity: DataTypes.INTEGER,
 		preview_url: DataTypes.TEXT,
 		track_number: DataTypes.INTEGER,
@@ -18,9 +18,10 @@ module.exports = (sequelize, DataTypes) => {
 		// associations can be defined here
 		//has one album
 		//has many artists
-		// has many available markets
-		Track.hasMany(models.AvailableMarket, {
-			hooks: 'false',
+		// track_market join table, see create-track-market migration
+		Track.belongsToMany(models.AvailableMarket, {
+			as: 'track',
+			through: 'track_market',
 		});
 		Track.hasMany(models.ExternalUrl, {
 			onDelete: 'cascade',
