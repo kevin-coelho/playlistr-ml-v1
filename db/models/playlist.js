@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 	const Playlist = sequelize.define('Playlist', {
 		id: DataTypes.TEXT,
 		collaborative: DataTypes.BOOLEAN,
-		description: DataTypes.TEXT,	
+		description: DataTypes.TEXT,
 		href: DataTypes.TEXT,
 		name: DataTypes.TEXT,
 		public: DataTypes.BOOLEAN,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 		});
 		Playlist.hasOne(models.Owner, {
 			onDelete: 'cascade',
-			hooks: 'true',			
+			hooks: 'true',
 		});
 		// has many tracks
 	};

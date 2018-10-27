@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
 	Track.associate = function(models) {
 		// associations can be defined here
 		//has one album
-		//has many artists
+		Track.hasMany(models.Artist, {
+	        // ??
+	    });
 		// has many available markets
 		Track.hasMany(models.AvailableMarket, {
 			hooks: 'false',
@@ -32,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
 		});
 		Track.hasMany(models.ExternalId, {
 			onDelete: 'cascade',
-			hooks: 'true',			
+			hooks: 'true',
 		});
 	};
 	return Track;
