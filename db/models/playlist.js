@@ -10,7 +10,19 @@ module.exports = (sequelize, DataTypes) => {
 		snapshot_id: DataTypes.TEXT,
 		type: DataTypes.TEXT,
 		uri: DataTypes.TEXT,
-	}, {});
+		createdAt: {
+			type: DataTypes.DATE,
+			field: 'beginTime',
+			defaultValue: sequelize.literal('NOW()'),
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			field: 'beginTime',
+			defaultValue: sequelize.literal('NOW()'),
+		}
+	}, {
+		timestamps: true,
+	});
 	Playlist.associate = function(models) {
 		// associations can be defined here
 		Playlist.hasOne(models.ExternalUrl, {
@@ -29,7 +41,9 @@ module.exports = (sequelize, DataTypes) => {
 			onDelete: 'cascade',
 			hooks: 'true',
 		});
-		// has many tracks
+		Playlist.hasMany(models.Track, {
+			hooks: 'false',
+		});
 	};
 	return Playlist;
 };

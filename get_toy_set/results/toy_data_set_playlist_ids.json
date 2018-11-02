@@ -46,7 +46,7 @@
 },
 {
 	"id": "37i9dQZF1DXaJZdVx8Fwkq",
-	"name": "Sad Vibe",	
+	"name": "Sad Vibe"
 },
 {
 	"id": "37i9dQZF1DX4E3UdUs7fUx",
@@ -59,7 +59,7 @@
 },
 {
 	"id": "37i9dQZF1DXarebqD2nAVg",
-	"name": "Tender",
+	"name": "Tender"
 },
 {
 	"id": "37i9dQZF1DX0SM0LYsmbMT",
@@ -81,7 +81,7 @@
 },
 {
 	"id": "37i9dQZF1DXb1IUaS6F7Z8",
-	"name": "Celtic Punk",
+	"name": "Celtic Punk"
 },
 {
 	"id": "37i9dQZF1DWU2LcZVHsTdv",
@@ -100,5 +100,5 @@
 		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX7OIddoQVdRt/tracks",
 		"total": 50
 	}
-},
+}
 ]
