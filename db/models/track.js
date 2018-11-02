@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
 	Track.associate = function(models) {
 		// associations can be defined here
 		//has one album
+		Track.hasMany(models.Artist, {
+	        // ??
+	    });
 		//has many artists
 		// track_market join table, see create-track-market migration
 		Track.belongsToMany(models.AvailableMarket, {
@@ -33,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
 		});
 		Track.hasMany(models.ExternalId, {
 			onDelete: 'cascade',
-			hooks: 'true',			
+			hooks: 'true',
 		});
 	};
 	return Track;
