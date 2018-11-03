@@ -7,7 +7,8 @@ const pe = new PrettyError();
 
 // CONSTANTS
 const { toy_id_file, toy_playlists_full } = require('./constants');
-const { getPlaylistConfig, sleep } = require('./util');
+const { getPlaylistConfig, pagingLoop } = require('./util');
+const { sleep } = require('../utils');
 
 // MAIN FUNCTION
 const main = async () => {
@@ -22,6 +23,9 @@ const main = async () => {
 			concurrency: 1,
 		})
 		.then(results => results.map(elem => elem.data))
+		// fill out tracks we didn't catch in the first request
+		.then(results => Promise.map(results, result => Promise.all([Promise.resolve(result), pagingLoop(api_instance, result.tracks)])))
+		.then(results => results.map(([result, all_tracks]) => Object.assign(result, { tracks: all_tracks })))
 		.then(results => fs.writeFileAsync(toy_playlists_full, JSON.stringify(results)))
 		.catch(err => console.error(pe.render(err)));
 	} catch (err) {
