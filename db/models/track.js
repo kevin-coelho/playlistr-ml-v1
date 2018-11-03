@@ -17,8 +17,9 @@ module.exports = (sequelize, DataTypes) => {
 	Track.associate = function(models) {
 		// associations can be defined here
 		//has one album
-		Track.hasMany(models.Artist, {
-	        // ??
+		Track.belongsToMany(models.Artist, {
+			as: 'track',
+			through: 'track_artist',
 	    });
 		//has many artists
 		// track_market join table, see create-track-market migration

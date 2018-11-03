@@ -10,6 +10,7 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const res_file = './api_results/spotify_playlists.json';
 const res_file_additional = './api_results/spotify_playlist_additional.json';
+const { getPlaylistConfig, sleep } = require('./util');
 const limit = 50;
 function playlistRequestConfig(offset) {
 	return {
@@ -21,15 +22,7 @@ function playlistRequestConfig(offset) {
 		}
 	};
 }
-function getPlaylistConfig(id) {
-	return {
-		url: `https://api.spotify.com/v1/playlists/${id}`,
-		method: 'get'
-	}
-}
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 const loop = async (api_instance) => {
 	let result = [];
 	let offset = 0;	
