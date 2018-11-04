@@ -41,8 +41,9 @@ module.exports = (sequelize, DataTypes) => {
 			onDelete: 'cascade',
 			hooks: 'true',
 		});
-		Playlist.hasMany(models.Track, {
-			hooks: 'false',
+		Playlist.belongsToMany(models.Track, {
+			as: 'playlist',
+			through: 'playlist_track',
 		});
 	};
 	return Playlist;

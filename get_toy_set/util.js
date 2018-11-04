@@ -39,6 +39,19 @@ function getTrackConfig(ids) {
 }
 
 /**
+ * Get the audio analysis for a track from Spotify's API
+ * 
+ * @param  {int}  						id 		ID of the track object
+ * @return {Audio Analysis Object} 				Audio analysis object for the track
+ */
+function getTrackAudioAnalysisConfig(id) {
+	return {
+		url: `/audio-analysis/${id}`,
+		method: 'get',
+	}
+}
+
+/**
  * Get an array of items corresponding to a single Spotify paging object.
  * 
  * @param  {Spotify Axios API Instance}  	api_instance 	An instance of require('./api_manager')
@@ -64,4 +77,4 @@ const pagingLoop = async (api_instance, firstPage) => {
 	}
 }
 
-module.exports = { getPlaylistConfig, getTrackConfig, pagingLoop };
+module.exports = { getPlaylistConfig, getTrackConfig, pagingLoop, getTrackAudioAnalysisConfig };

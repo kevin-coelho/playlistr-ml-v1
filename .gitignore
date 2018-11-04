@@ -1,6 +1,9 @@
 # Manager files
 api_manager/env
 
+# Results
+get_toy_set/results
+
 # Logs
 logs
 *.log

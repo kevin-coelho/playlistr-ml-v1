@@ -2,6 +2,8 @@
 
 ## TODO
 [ ] Create playlist-track model (query by who added what track and when it was added)
+[x] Get toy set with full track objects
+[ ] Get audio features for all track objects
 
 ## Sequelize Model Generate Command
 Example:

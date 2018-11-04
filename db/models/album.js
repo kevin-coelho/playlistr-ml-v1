@@ -39,9 +39,13 @@ module.exports = (sequelize, DataTypes) => {
 		});
 		//has many genres
 		Album.hasMany(models.Image, {
-			// ?
+			onDelete: 'cascade',
+			hooks: 'true',
 		});
-		//has one page (with multiple tracks)
+		Album.hasMany(models.Track, {
+			onDelete: 'cascade',
+			hooks: 'true',
+		});
 	};
 	return Album;
 };

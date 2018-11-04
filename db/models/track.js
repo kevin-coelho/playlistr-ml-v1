@@ -17,12 +17,19 @@ module.exports = (sequelize, DataTypes) => {
 	Track.associate = function(models) {
 		// associations can be defined here
 		//has one album
+		Track.belongsToOne(models.Album, {
+			onDelete: 'set null',
+			hooks: 'true',
+		});
+		//has many artists
 		Track.belongsToMany(models.Artist, {
 			as: 'track',
 			through: 'track_artist',
 	    });
-		//has many artists
-		// track_market join table, see create-track-market migration
+	    Track.belongsToMany(models.Playlist, {
+	    	as: 'track',
+	    	through: 'playlist_track',
+	    });
 		Track.belongsToMany(models.AvailableMarket, {
 			as: 'track',
 			through: 'track_market',
@@ -36,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
 			hooks: 'true',
 		});
 		Track.hasMany(models.ExternalId, {
+			onDelete: 'cascade',
+			hooks: 'true',
+		});
+		Track.hasOne(models.AudioAnalysis, {
 			onDelete: 'cascade',
 			hooks: 'true',
 		});

@@ -1,5 +1,6 @@
 // DEPENDENCIES
 const axios = require('axios');
+const axiosRetry = require('axios-retry');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const moment = require('moment');
@@ -20,10 +21,15 @@ const ERR_TYPES = {
 	'bad_write': 'WriteError'
 }
 const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
-const TIMEOUT = 5000;
+const TIMEOUT = 8000;
 const api_instance = axios.create({
 	baseURL: SPOTIFY_API_URL,
 	timeout: TIMEOUT
+});
+axiosRetry(api_instance, {
+	retries: 3,
+	retryDelay: axiosRetry.exponentialDelay,
+	shouldResetTimeout: true,
 });
 
 // GLOBALS
@@ -88,8 +94,8 @@ function tokenRequestConfig() {
 }
 
 // interceptor to add token to the beginning of all requests
-const interceptor = async (request) => {
-	if(api_instance.token_obj) {
+const req_interceptor = async (request) => {
+	if (api_instance.token_obj) {
 		const token_obj = api_instance.token_obj;
 		api_instance.token_obj = await moment(token_obj.expiration).isBefore(moment()) ? tokenRequest() : token_obj;
 		request.headers.Authorization = `Bearer ${api_instance.token_obj.access_token}`;
@@ -104,7 +110,7 @@ module.exports = (() => {
 	return getToken()
 		.then(token_obj => {
 			api_instance.token_obj = token_obj;
-			api_instance.interceptors.request.use(interceptor);
+			api_instance.interceptors.request.use(req_interceptor);
 			console.log(chalk.green('✔ Spotify api instance ready'))
 			return Promise.resolve(api_instance);
 		});
