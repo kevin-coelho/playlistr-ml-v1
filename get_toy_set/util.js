@@ -1,4 +1,5 @@
 // DEPENDENCIES
+const qs = require('query-string');
 const { sleep } = require('../utils');
 
 // CONSTANTS
@@ -52,6 +53,23 @@ function getTrackAudioAnalysisConfig(id) {
 }
 
 /**
+ * Get an array of audio features objects for the specified tracks from Spotify's API
+ * 
+ * @param  {[Array of strings]} 					ids		Ids of the tracks
+ * @return {[Array of Audio Features Objects]}				Array of audio features objects in 
+ *                    										the same order as the passed track ids
+ */
+function getTrackAudioFeaturesConfig(ids) {
+	return {
+		url: `/audio-features`,
+		method: 'get',
+		params: {
+			ids: ids.join(','),
+		},
+	}
+}
+
+/**
  * Get an array of items corresponding to a single Spotify paging object.
  * 
  * @param  {Spotify Axios API Instance}  	api_instance 	An instance of require('./api_manager')
@@ -77,4 +95,4 @@ const pagingLoop = async (api_instance, firstPage) => {
 	}
 }
 
-module.exports = { getPlaylistConfig, getTrackConfig, pagingLoop, getTrackAudioAnalysisConfig };
+module.exports = { getPlaylistConfig, getTrackConfig, pagingLoop, getTrackAudioAnalysisConfig, getTrackAudioFeaturesConfig };

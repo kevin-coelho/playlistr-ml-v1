@@ -8,7 +8,7 @@ const btoa = require('btoa');
 const PrettyError = require('pretty-error');
 const pe = new PrettyError();
 const chalk = require('chalk');
-const qs = require('querystring');
+const qs = require('query-string');
 const path = require('path');
 
 // ENVIRONMENT
@@ -104,6 +104,19 @@ const req_interceptor = async (request) => {
 	return request;
 }
 
+// interceptor to print response errors
+const res_interceptor = async (err) => {
+	console.error(pe.render(err));
+	if (err.response) {
+		// The request was made and the server responded with a status code
+		// that falls out of the range of 2xx
+		console.error(err.response.data);
+		console.error(err.response.status);
+		console.error(err.response.headers);
+	}
+	return Promise.reject(err.config);
+}
+
 // export an api_instance with valid spotify token and request interceptor (to refresh token as needed)
 module.exports = (() => {
 	console.log(chalk.yellow('Setting up Spotify api instance...'));
@@ -111,6 +124,7 @@ module.exports = (() => {
 		.then(token_obj => {
 			api_instance.token_obj = token_obj;
 			api_instance.interceptors.request.use(req_interceptor);
+			api_instance.interceptors.response.use(null, res_interceptor);
 			console.log(chalk.green('✔ Spotify api instance ready'))
 			return Promise.resolve(api_instance);
 		});
