@@ -13,13 +13,16 @@ const path = require('path');
 
 // ENVIRONMENT
 const root_dir = path.resolve(__dirname, '..');
-require('dotenv').config({ path: `${root_dir}/.env` });
+const env_path = `${root_dir}/.env`;
+(async () => {
+	try { await fs.statAsync(env_path) }
+	catch (err) { console.error(chalk.red(`[${env_path}]`), 'Env not found, exiting...'); process.exit(1); }
+})();
+require('dotenv').config({ path:  env_path });
 
 // CONSTANTS
-const token_file = path.resolve(root_dir, 'api_manager/env/spotify_token.json');
-const ERR_TYPES = {
-	'bad_write': 'WriteError'
-}
+const token_dir = path.resolve(root_dir, 'api_manager/env');
+const token_file = path.join(token_dir, 'spotify_token.json');
 const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
 const TIMEOUT = 8000;
 const api_instance = axios.create({
@@ -32,8 +35,11 @@ axiosRetry(api_instance, {
 	shouldResetTimeout: true,
 });
 
-// GLOBALS
-let current_token = null;
+// SETUP TOKEN DIR
+(async () => {
+	try { await fs.statAsync(token_dir); }
+	catch (err) { await fs.mkdirAsync(token_dir); }
+})();
 
 // get access token
 const getToken = async () => {
@@ -51,7 +57,7 @@ const getToken = async () => {
 		console.error(pe.render(err));
 		return tokenRequest();
 	}
-}
+};
 
 // send request to spotify to get a new access token and write to file
 function tokenRequest() {
@@ -102,10 +108,15 @@ const req_interceptor = async (request) => {
 	}
 	console.log(`${request.method.toUpperCase()}`, chalk.yellow(request.url));
 	return request;
-}
+};
+
+const res_interceptor = async (response) => {
+	return Promise.resolve(response.data);
+};
 
 // interceptor to print response errors
-const res_interceptor = async (err) => {
+const res_err_interceptor = async (err) => {
+	console.error(chalk.red(`[${err.config.url}] Error repsonse received`));
 	console.error(pe.render(err));
 	if (err.response) {
 		// The request was made and the server responded with a status code
@@ -115,7 +126,7 @@ const res_interceptor = async (err) => {
 		console.error(err.response.headers);
 	}
 	return Promise.reject(err.config);
-}
+};
 
 // export an api_instance with valid spotify token and request interceptor (to refresh token as needed)
 module.exports = (() => {
@@ -124,8 +135,8 @@ module.exports = (() => {
 		.then(token_obj => {
 			api_instance.token_obj = token_obj;
 			api_instance.interceptors.request.use(req_interceptor);
-			api_instance.interceptors.response.use(null, res_interceptor);
-			console.log(chalk.green('✔ Spotify api instance ready'))
+			api_instance.interceptors.response.use(res_interceptor, res_err_interceptor);
+			console.log(chalk.green('✔ Spotify api instance ready'));
 			return Promise.resolve(api_instance);
 		});
 })();

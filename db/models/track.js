@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
 		Track.belongsToMany(models.Artist, {
 			as: 'track',
 			through: 'track_artist',
-	    });
-	    Track.belongsToMany(models.Playlist, {
-	    	as: 'track',
-	    	through: 'playlist_track',
-	    });
+		});
+		Track.belongsToMany(models.Playlist, {
+			as: 'track',
+			through: 'playlist_track',
+		});
 		Track.belongsToMany(models.AvailableMarket, {
 			as: 'track',
 			through: 'track_market',

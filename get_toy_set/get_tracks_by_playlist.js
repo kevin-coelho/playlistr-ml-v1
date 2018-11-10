@@ -35,7 +35,7 @@ const loop = async (api_instance, playlist_ids) => {
 	while (true) {
 		config = playlistRequestConfig(offset);
 		console.log('Sending request..', chalk.green(config.url));
-		current_results = (await api_instance.request(config)).data;
+		current_results = (await api_instance.request(config));
 		result.push(...current_results.items);
 		console.log('Next: ', chalk.yellow(current_results.next));
 		offset = offset + limit;
@@ -55,7 +55,7 @@ const main = async () => {
 	try {
 		//const api_instance = await require('./api_manager');
 		//const first_results = await loop(api_instance);
-		//const second_results = await Promise.map(additional_playlists, (async (id) => (await api_instance.request(getPlaylistConfig(id))).data));
+		//const second_results = await Promise.map(additional_playlists, (async (id) => (await api_instance.request(getPlaylistConfig(id)))));
 		//fs.writeFileAsync(res_file, JSON.stringify(first_results.concat(second_results)));
 		//fs.writeFileAsync(res_file_additional, JSON.stringify(second_results));
 	}

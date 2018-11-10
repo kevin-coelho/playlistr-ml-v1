@@ -13,13 +13,13 @@ module.exports = {
 	up: (queryInterface, Sequelize) => {
 		const filtered = toy_playlists.map(playlist => {
 			return Object.keys(playlist)
-			.filter(key => ['id', 'name'].includes(key))
-			.reduce((filteredObj, key) => {
-				filteredObj[key] = playlist[key];
-				filteredObj['createdAt'] = new Date();
-				filteredObj['updatedAt'] = new Date();
-				return filteredObj;
-			}, {})
+				.filter(key => ['id', 'name'].includes(key))
+				.reduce((filteredObj, key) => {
+					filteredObj[key] = playlist[key];
+					filteredObj['createdAt'] = new Date();
+					filteredObj['updatedAt'] = new Date();
+					return filteredObj;
+				}, {});
 		});
 		return queryInterface.bulkInsert('Playlists', filtered, {
 			fields: ['id', 'name'],

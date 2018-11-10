@@ -8,7 +8,6 @@ const pe = new PrettyError();
 // CONSTANTS
 const { toy_playlists_full, toy_playlists_audio_analysis } = require('./constants');
 const { getTrackAudioAnalysisConfig } = require('./util');
-const { sleep } = require('../utils');
 
 // MAIN FUNCTION
 const main = async () => {
@@ -22,17 +21,17 @@ const main = async () => {
 		Promise.map(track_ids, id => Promise.all([id, api_instance.request(getTrackAudioAnalysisConfig(id))]), {
 			concurrency: 4,
 		})
-		.then(results => results.reduce((result_obj, result) => {
-			result_obj[result[0]] = result[1].data;
-			return result_obj;
-		}, {}))
-		.then(results => {
-			return fs.writeFileAsync(toy_playlists_audio_analysis, JSON.stringify(results))
-			.then(() => console.log(`[${chalk.green(toy_playlists_audio_analysis)}] Wrote audio analysis to file for tracks: ${chalk.green(Object.keys(results).length)}`));
-		})
-		.catch(err => console.error(pe.render(err)));
+			.then(results => results.reduce((result_obj, result) => {
+				result_obj[result[0]] = result[1];
+				return result_obj;
+			}, {}))
+			.then(results => {
+				return fs.writeFileAsync(toy_playlists_audio_analysis, JSON.stringify(results))
+					.then(() => console.log(`[${chalk.green(toy_playlists_audio_analysis)}] Wrote audio analysis to file for tracks: ${chalk.green(Object.keys(results).length)}`));
+			})
+			.catch(err => console.error(pe.render(err)));
 	} catch (err) {
 		console.error(pe.render(err));
 	}
-}
+};
 main();

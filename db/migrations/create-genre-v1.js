@@ -1,15 +1,16 @@
 'use strict';
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.createTable('Restrictions', {
+		return queryInterface.createTable('Genres', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER
 			},
-			reason: {
-				type: Sequelize.TEXT
+			name: {
+				type: Sequelize.TEXT,
+				allowNull: false
 			},
 			createdAt: {
 				allowNull: false,
@@ -22,6 +23,6 @@ module.exports = {
 		});
 	},
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.dropTable('Restrictions');
+		return queryInterface.dropTable('Genres');
 	}
 };

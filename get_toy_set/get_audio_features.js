@@ -8,7 +8,6 @@ const pe = new PrettyError();
 // CONSTANTS
 const { toy_playlists_full, toy_playlists_audio_features, audio_features_errors } = require('./constants');
 const { getTrackAudioFeaturesConfig } = require('./util');
-const { sleep } = require('../utils');
 const batchSizeLimit = 100;
 
 // MAIN FUNCTION
@@ -31,37 +30,35 @@ const main = async () => {
 		Promise.map(track_ids, id_array => Promise.all([id_array, api_instance.request(getTrackAudioFeaturesConfig(id_array))]).catch(err => {
 			console.error(chalk.red(`Error occurred, request ${err.config.url}`));
 			return Promise.resolve([ id_array, false ]);
-		}), {
-			concurrency: 4,
-		})
-		.then(results => results.reduce((result_obj, batch_result) => {
-			if (!result_obj.failed_batches) result_obj.failed_batches = [];
-			if (!result_obj.success_ids) result_obj.success_ids = {};
-			if (!batch_result[1]) {
+		}), { concurrency: 4 })
+			.then(results => results.reduce((result_obj, batch_result) => {
+				if (!result_obj.failed_batches) result_obj.failed_batches = [];
+				if (!result_obj.success_ids) result_obj.success_ids = {};
+				if (!batch_result[1]) {
 				// error occurred on this batch, push to error object
-				result_obj.failed_batches.push(batch_result[0]);
-			}
-			else {
-				//console.log(batch_result[1].data);
-				batch_result[0].forEach((id, idx) => {
-					result_obj.success_ids[id] = batch_result[1].data.audio_features[idx];
-				});
-			}
-			return result_obj;
-		}, {}))
-		.then(result_obj => {
-			return Promise.all([
-				fs.writeFileAsync(toy_playlists_audio_features, JSON.stringify(result_obj.success_ids))
-				.then(() => console.log(`[${chalk.green(toy_playlists_audio_features)}] Wrote audio features to file for tracks: ${chalk.green(Object.keys(result_obj.success_ids).length)}`)),
-				fs.writeFileAsync(audio_features_errors, JSON.stringify(result_obj.failed_batches))
-				.then(() => console.log(`[${chalk.red(audio_features_errors)}] Failed batches written to err file: ${chalk.red(result_obj.failed_batches.length)}`)),
-			])
-		})
-		.catch(err => console.error(pe.render(err)));
+					result_obj.failed_batches.push(batch_result[0]);
+				}
+				else {
+				//console.log(batch_result[1]);
+					batch_result[0].forEach((id, idx) => {
+						result_obj.success_ids[id] = batch_result[1].audio_features[idx];
+					});
+				}
+				return result_obj;
+			}, {}))
+			.then(result_obj => {
+				return Promise.all([
+					fs.writeFileAsync(toy_playlists_audio_features, JSON.stringify(result_obj.success_ids))
+						.then(() => console.log(`[${chalk.green(toy_playlists_audio_features)}] Wrote audio features to file for tracks: ${chalk.green(Object.keys(result_obj.success_ids).length)}`)),
+					fs.writeFileAsync(audio_features_errors, JSON.stringify(result_obj.failed_batches))
+						.then(() => result_obj.failed_batches ? console.log(`[${chalk.red(audio_features_errors)}] Failed batches written to err file: ${chalk.red(result_obj.failed_batches.length)}`) : null),
+				]);
+			})
+			.catch(err => console.error(pe.render(err)));
 	} catch (err) {
 		console.error(pe.render(err));
 	}
-}
+};
 
 main();
 // curl -X GET "https://api.spotify.com/v1/audio-features/?ids=4JpKVNYnVcJ8tuMKjAj50A,2NRANZE9UCmPAS5XVbXL40,24JygzOLM0EmRQeGtFcIcG" -H "Authorization: Bearer {your access token}"

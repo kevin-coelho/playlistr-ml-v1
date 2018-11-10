@@ -20,23 +20,24 @@ function getPlaylistConfig(id) {
 	return {
 		url: `/playlists/${id}`,
 		method: 'get'
-	}
+	};
 }
 
 /**
  * Get an array of track objects from Spotify's API.
  * 
- * @param  {int} 							 ids 	Array of track ids to retrieve
+ * @param  {String} 						ids 	Array of track ids to retrieve. Must be passed as
+ * 													comma-separated string.
  * @return {[Array of Track Object]} 				Retrieved array of track objects
  */
 function getTrackConfig(ids) {
 	return {
-		url: `/tracks`,
+		url: '/tracks',
 		method: 'get',
 		params: {
 			ids
 		},
-	}
+	};
 }
 
 /**
@@ -49,7 +50,7 @@ function getTrackAudioAnalysisConfig(id) {
 	return {
 		url: `/audio-analysis/${id}`,
 		method: 'get',
-	}
+	};
 }
 
 /**
@@ -61,12 +62,43 @@ function getTrackAudioAnalysisConfig(id) {
  */
 function getTrackAudioFeaturesConfig(ids) {
 	return {
-		url: `/audio-features`,
+		url: '/audio-features',
 		method: 'get',
 		params: {
 			ids: ids.join(','),
 		},
-	}
+	};
+}
+
+/**
+ * @param  {String} 				ids 		Array of Ids of Artist to get from Spotify API
+ * @return {Artist Array Object} 				Array of Artist Objects, {"artists": [{firstArtist}, {secondArtist}, ...]}
+ */
+function getArtistConfig(ids) {
+	return {
+		url: '/artists',
+		method: 'get',
+		params: {
+			ids: ids.join(','),
+		}
+	};
+}
+
+/**
+ * @param  {Array} 				arr 		Array of items to batch
+ * @param  {Int} 				batchSize	Size of batches to create
+ * @return {Array of Array} 				Array of arrays, each of size <= batchSize
+ */
+function arrayToBatches(arr, batchSize) {
+	return arr.reduce((grouped_arrays, artist_id, idx) => {
+		const outer_index = Math.floor(idx / batchSize);
+		if (typeof grouped_arrays[outer_index] === 'undefined') {
+			grouped_arrays[outer_index] = [];
+		} else {
+			grouped_arrays[outer_index].push(artist_id);
+		}
+		return grouped_arrays;
+	}, []);
 }
 
 /**
@@ -85,7 +117,7 @@ const pagingLoop = async (api_instance, firstPage) => {
 		try {
 			const current_results = (await api_instance.request({
 				url: current_page.next
-			})).data;
+			}));
 			results.push(...current_results.items);
 			current_page = current_results;
 			await sleep(page_request_delay);
@@ -93,6 +125,14 @@ const pagingLoop = async (api_instance, firstPage) => {
 			return Promise.reject(err);
 		}
 	}
-}
+};
 
-module.exports = { getPlaylistConfig, getTrackConfig, pagingLoop, getTrackAudioAnalysisConfig, getTrackAudioFeaturesConfig };
+module.exports = {
+	getPlaylistConfig,
+	getTrackConfig,
+	pagingLoop,
+	getTrackAudioAnalysisConfig,
+	getTrackAudioFeaturesConfig,
+	getArtistConfig,
+	arrayToBatches,
+};

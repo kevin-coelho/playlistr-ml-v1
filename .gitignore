@@ -51,6 +51,9 @@ typings/
 # Optional eslint cache
 .eslintcache
 
+# eslint RC file
+.eslintrc
+
 # Optional REPL history
 .node_repl_history
 
