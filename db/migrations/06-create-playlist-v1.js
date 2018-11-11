@@ -1,27 +1,40 @@
 'use strict';
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.createTable('Artists', {
+		return queryInterface.createTable('Playlists', {
 			id: {
 				allowNull: false,
-				autoIncrement: true,
+				autoIncrement: false,
 				primaryKey: true,
+				type: Sequelize.STRING
+			},
+			collaborative: {
+				type: Sequelize.BOOLEAN,
+			},
+			description: {
 				type: Sequelize.TEXT
 			},
 			href: {
 				type: Sequelize.TEXT
 			},
 			name: {
-				type: Sequelize.TEXT
+				type: Sequelize.TEXT,
+				allowNull: false,
 			},
-			popularity: {
-				type: Sequelize.INTEGER				
+			primary_color: {
+				type: Sequelize.TEXT,
+			},
+			public: {
+				type: Sequelize.BOOLEAN,
+			},
+			snapshot_id: {
+				type: Sequelize.TEXT
 			},
 			type: {
 				type: Sequelize.TEXT
 			},
 			uri: {
-				type: Sequelize.TEXT
+				type: Sequelize.TEXT,
 			},
 			createdAt: {
 				allowNull: false,
@@ -34,6 +47,6 @@ module.exports = {
 		});
 	},
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.dropTable('Artists');
+		return queryInterface.dropTable('Playlists');
 	}
 };

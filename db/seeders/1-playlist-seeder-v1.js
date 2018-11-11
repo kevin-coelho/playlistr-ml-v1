@@ -2,18 +2,41 @@
 'use strict';
 
 const fs = require('fs');
-const toy_path = '../get_toy_set/results/toy_data_set_playlist_ids.json';
-const toy_playlists = ((fs) => {
+const toy_path = '../get_toy_set/results/toy_data_set_playlists_full.json';
+const toy_playlists = (() => {
 	if (fs.existsSync(toy_path)) return JSON.parse(fs.readFileSync(toy_path));
 	return null;
-})(fs);
+})();
 const Promise = require('bluebird');
+
+// CONSTANTS
+const include_keys = [
+	'id',
+	'name',
+	'collaborative',
+	'description',
+	'href',
+	'name',
+	'primary_color',
+	'public',
+	'snapshot_id',
+	'type',
+	'uri'
+];
+
+const associated_obj_keys = [
+	'external_urls',
+	'followers',
+	'images',
+	'owner',
+	'tracks',
+];
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		const filtered = toy_playlists.map(playlist => {
 			return Object.keys(playlist)
-				.filter(key => ['id', 'name'].includes(key))
+				.filter(key => include_keys.includes(key))
 				.reduce((filteredObj, key) => {
 					filteredObj[key] = playlist[key];
 					filteredObj['createdAt'] = new Date();
@@ -21,8 +44,9 @@ module.exports = {
 					return filteredObj;
 				}, {});
 		});
+		console.log(filtered);
 		return queryInterface.bulkInsert('Playlists', filtered, {
-			fields: ['id', 'name'],
+			fields: include_keys,
 		});
 	},
 
