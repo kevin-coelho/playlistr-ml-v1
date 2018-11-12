@@ -53,14 +53,6 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE,
 			},
-			// ASSOCIATIONS
-			album: {
-				type: Sequelize.TEXT,
-				references: {
-					model: 'Albums',
-					key: 'id',
-				},
-			},
 		});
 	},
 	down: (queryInterface, Sequelize) => {

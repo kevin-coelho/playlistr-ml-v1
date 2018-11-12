@@ -15,7 +15,7 @@ const path = require('path');
 const root_dir = path.resolve(__dirname, '..');
 const env_path = `${root_dir}/.env`;
 (async () => {
-	try { await fs.statAsync(env_path) }
+	try { await fs.statAsync(env_path); }
 	catch (err) { console.error(chalk.red(`[${env_path}]`), 'Env not found, exiting...'); process.exit(1); }
 })();
 require('dotenv').config({ path:  env_path });
@@ -116,7 +116,7 @@ const res_interceptor = async (response) => {
 
 // interceptor to print response errors
 const res_err_interceptor = async (err) => {
-	console.error(chalk.red(`[${err.config.url}] Error repsonse received`));
+	console.error(chalk.red(`[${err.config.url}] Error response received`));
 	console.error(pe.render(err));
 	if (err.response) {
 		// The request was made and the server responded with a status code
@@ -125,7 +125,7 @@ const res_err_interceptor = async (err) => {
 		console.error(err.response.status);
 		console.error(err.response.headers);
 	}
-	return Promise.reject(err.config);
+	return Promise.reject(err);
 };
 
 // export an api_instance with valid spotify token and request interceptor (to refresh token as needed)
@@ -137,6 +137,7 @@ module.exports = (() => {
 			api_instance.interceptors.request.use(req_interceptor);
 			api_instance.interceptors.response.use(res_interceptor, res_err_interceptor);
 			console.log(chalk.green('✔ Spotify api instance ready'));
-			return Promise.resolve(api_instance);
+			axiosRetry(api_instance, { retries: 3 });
+			return Promise.resolve(api_instance, { retries: 3 });
 		});
 })();

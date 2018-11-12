@@ -1,6 +1,7 @@
 /*jshint esversion: 6, node: true*/
 'use strict';
 
+const chalk = require('chalk');
 const fs = require('fs');
 const toy_path = '../get_toy_set/results/toy_data_set_playlists_full.json';
 const toy_playlists = (() => {
@@ -44,10 +45,9 @@ module.exports = {
 					return filteredObj;
 				}, {});
 		});
-		console.log(filtered);
 		return queryInterface.bulkInsert('Playlists', filtered, {
 			fields: include_keys,
-		});
+		}).then(console.log(`${chalk.green('Seed success')} Playlists seeded: ${chalk.green(filtered.length)}`));
 	},
 
 	down: (queryInterface, Sequelize) => {

@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 			through: 'track_market',
 		});
 		Track.hasMany(models.ExternalUrl, {
+			through: 'track_external_url',
 			onDelete: 'cascade',
 			hooks: 'true',
 		});
@@ -43,10 +44,15 @@ module.exports = (sequelize, DataTypes) => {
 			hooks: 'true',
 		});
 		Track.hasMany(models.ExternalId, {
+			through: 'track_external_id',
 			onDelete: 'cascade',
 			hooks: 'true',
 		});
 		Track.hasOne(models.AudioAnalysis, {
+			onDelete: 'cascade',
+			hooks: 'true',
+		});
+		Track.hasOne(models.AudioFeature, {
 			onDelete: 'cascade',
 			hooks: 'true',
 		});

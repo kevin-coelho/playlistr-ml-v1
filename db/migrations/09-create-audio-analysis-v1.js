@@ -6,8 +6,27 @@ module.exports = {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
-				type: Sequelize.INTEGER
+				type: Sequelize.INTEGER,
 			},
+			// ASSOCIATIONS
+			trackId: {
+				allowNull: false,
+				type: Sequelize.TEXT,
+				references: {
+					model: 'Tracks',
+					key: 'id'
+				},
+				onUpdate: 'cascade',
+				onDelete: 'cascade',
+			},
+			createdAt: {
+				allowNull: false,
+				type: Sequelize.DATE
+			},
+			updatedAt: {
+				allowNull: false,
+				type: Sequelize.DATE
+			},			
 			bars: {
 				type: Sequelize.JSONB
 			},
@@ -28,24 +47,6 @@ module.exports = {
 			},
 			track: {
 				type: Sequelize.JSONB
-			},
-			createdAt: {
-				allowNull: false,
-				type: Sequelize.DATE
-			},
-			updatedAt: {
-				allowNull: false,
-				type: Sequelize.DATE
-			},
-			// ASSOCIATIONS
-			trackId: {
-				type: Sequelize.TEXT,
-				references: {
-					model: 'Tracks',
-					key: 'id'
-				},
-				onUpdate: 'cascade',
-				onDelete: 'cascade',
 			},
 		});
 	},

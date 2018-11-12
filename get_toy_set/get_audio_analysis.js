@@ -22,7 +22,11 @@ const main = async () => {
 			concurrency: 4,
 		})
 			.then(results => results.reduce((result_obj, result) => {
-				result_obj[result[0]] = result[1];
+				delete result[1].track.codestring;
+				delete result[1].track.echoprintstring;
+				delete result[1].track.synchstring;
+				delete result[1].track.rhythmstring;
+				result_obj[result[0]] = { track: result[1].track };
 				return result_obj;
 			}, {}))
 			.then(results => {

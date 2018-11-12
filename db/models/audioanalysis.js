@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
 	}, {});
 	AudioAnalysis.associate = function(models) {
 		// associations can be defined here
+		AudioAnalysis.belongsTo(models.Track, {
+			onDelete: 'cascade',
+			hooks: 'true',
+		});
 	};
 	return AudioAnalysis;
 };
