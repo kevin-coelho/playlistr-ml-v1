@@ -71,8 +71,10 @@ function getTrackAudioFeaturesConfig(ids) {
 }
 
 /**
- * @param  {String} 				ids 		Array of Ids of Artist to get from Spotify API
- * @return {Artist Array Object} 				Array of Artist Objects, {"artists": [{firstArtist}, {secondArtist}, ...]}
+ * Get an array of Artist Objects for provided ids
+ * 
+ * @param  {String} 					ids 		Array of Ids of Artist to get from Spotify API
+ * @return {[Array of Artist Object]} 				Array of Artist Objects, {"artists": [{firstArtist}, {secondArtist}, ...]}
  */
 function getArtistConfig(ids) {
 	return {
@@ -85,20 +87,27 @@ function getArtistConfig(ids) {
 }
 
 /**
+ * Get an array of related artists for specified artist id
+ * 
+ * @param  {string} 					id 			id of the "seed" artist
+ * @return {[Array of Artist Object]}    			Array of Artist Objects, {"artists": [{firstArtist}, {secondArtist}, ...]}
+ */
+function getRelatedArtistConfig(id) {
+	return {
+		url: `/artists/${id}/related-artists`,
+		method: 'get',
+	};
+}
+
+/**
  * @param  {Array} 				arr 		Array of items to batch
  * @param  {Int} 				batchSize	Size of batches to create
  * @return {Array of Array} 				Array of arrays, each of size <= batchSize
  */
 function arrayToBatches(arr, batchSize) {
-	return arr.reduce((grouped_arrays, artist_id, idx) => {
-		const outer_index = Math.floor(idx / batchSize);
-		if (typeof grouped_arrays[outer_index] === 'undefined') {
-			grouped_arrays[outer_index] = [];
-		} else {
-			grouped_arrays[outer_index].push(artist_id);
-		}
-		return grouped_arrays;
-	}, []);
+	const result = [];
+	while (arr.length > 0) result.push(arr.splice(0, batchSize));
+	return result;
 }
 
 /**
@@ -135,4 +144,5 @@ module.exports = {
 	getTrackAudioFeaturesConfig,
 	getArtistConfig,
 	arrayToBatches,
+	getRelatedArtistConfig,
 };

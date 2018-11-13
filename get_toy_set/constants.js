@@ -5,6 +5,7 @@ const toy_playlists_audio_features = './results/toy_data_set_tracks_audio_featur
 const audio_features_errors = './results/audio_analysis_errors.json';
 const artists_errors = './results/artists_errors.json';
 const toy_playlists_artists = './results/toy_data_set_artists.json';
+const toy_playlists_related_artists = './results/toy_data_set_related_artists.json';
 
 module.exports = {
 	toy_id_file,
@@ -14,4 +15,5 @@ module.exports = {
 	audio_features_errors,
 	toy_playlists_artists,
 	artists_errors,
+	toy_playlists_related_artists,
 };

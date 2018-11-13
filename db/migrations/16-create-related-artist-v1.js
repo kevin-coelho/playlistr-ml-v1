@@ -2,19 +2,19 @@
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface.createTable('related_artist', {
-			id: {
+			id: {				
 				type: Sequelize.INTEGER,
 				allowNull: false,
 				primaryKey: true,
 				autoIncrement: true,
 			},
 			primaryArtist: {
-				type: Sequelize.TEXT,
+				type: Sequelize.TEXT,				
 				allowNull: false,
 				references: {
 					model: 'Artists',
 					key: 'id',
-				}
+				},
 			},
 			secondaryArtist: {
 				type: Sequelize.TEXT,
@@ -22,7 +22,7 @@ module.exports = {
 				references: {
 					model: 'Artists',
 					key: 'id',
-				}
+				},
 			},
 			createdAt: {
 				allowNull: false,
@@ -32,7 +32,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE
 			}
-		});
+		}).then(() => queryInterface.addConstraint('related_artist', ['primaryArtist', 'secondaryArtist'], {
+			type: 'unique',
+			name: 'primary_secondary_unique_constraint',
+		}));
 	},
 	down: (queryInterface, Sequelize) => {
 		return queryInterface.dropTable('related_artist');

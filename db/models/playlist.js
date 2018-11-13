@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Playlist = sequelize.define('Playlist', {
-		id: DataTypes.TEXT,
 		collaborative: DataTypes.BOOLEAN,
 		description: DataTypes.TEXT,
 		href: DataTypes.TEXT,

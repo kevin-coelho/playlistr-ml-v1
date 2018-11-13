@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
 	const Album = sequelize.define('Album', {
 		album_type: DataTypes.TEXT,
 		href: DataTypes.TEXT,
-		id: DataTypes.TEXT,
 		label: DataTypes.TEXT,
 		name: DataTypes.TEXT,
 		popularity: DataTypes.INTEGER,
@@ -15,12 +14,10 @@ module.exports = (sequelize, DataTypes) => {
 	Album.associate = function(models) {
 		// associations can be defined here
 		Album.belongsToMany(models.Artist, {
-			as: 'album',
 			through: 'album_artist',
 			hooks: 'false',
 		});
 		Album.belongsToMany(models.AvailableMarket, {
-			as: 'album',
 			through: 'album_market',
 			hooks: 'false',
 		});

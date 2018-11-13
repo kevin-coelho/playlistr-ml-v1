@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Artist = sequelize.define('Artist', {
-		id: DataTypes.TEXT,
 		href: DataTypes.TEXT,
 		name: DataTypes.TEXT,
 		popularity: DataTypes.INTEGER,
@@ -27,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
 			hooks: 'false',
 		});
 		Artist.belongsToMany(models.Artist, {
-			as: 'related_artist',
-			through: 'related_artist'
+			as: 'related',
+			through: 'related_artist',
 		});
 	};
 	return Artist;
