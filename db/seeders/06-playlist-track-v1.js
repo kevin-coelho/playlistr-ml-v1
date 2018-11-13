@@ -6,7 +6,8 @@ const chalk = require('chalk');
 const fs = require('fs');
 const PrettyError = require('pretty-error');
 const pe = new PrettyError();
-const { filterUnique } = require('../../utils');
+const models = require('../models');
+const PlaylistTrack = models.PlaylistTrack;
 
 // CONSTANTS
 const toy_path = '../get_toy_set/results/toy_data_set_playlists_full.json';
@@ -24,8 +25,9 @@ module.exports = {
 			createdAt: new Date(),
 			updatedAt: new Date(),			
 		}));
-		return queryInterface.bulkInsert('playlist_track', filtered, {})
-			.then(() => console.log(`${chalk.green('Seed success.')} Track playlist associations inserted: ${chalk.green(filtered.length)}`));
+		return PlaylistTrack.bulkCreate(filtered, { ignoreDuplicates: true })
+			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent.detail)))
+			.then(console.log(`${chalk.green('Seed Success')} Track playlist associations inserted: ${chalk.green(filtered.length)}`));
 	},
 
 	down: (queryInterface, Sequelize) => {

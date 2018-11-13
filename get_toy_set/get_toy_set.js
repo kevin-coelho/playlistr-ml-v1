@@ -15,9 +15,8 @@ const main = async () => {
 	try {
 		const toy_set = JSON.parse(await fs.readFileAsync(toy_id_file));
 		const api_instance = await require('../api_manager');
-		Promise.map(toy_set, playlist => {
+		return Promise.map(toy_set, playlist => {
 			console.log(`Processing playlist: "${playlist.name}"`);
-			console.log(playlist);
 			return sleep(10).then(() => api_instance.request(getPlaylistConfig(playlist.id)));
 		}, { concurrency: 1 })
 			// fill out tracks we didn't catch in the first request
@@ -33,4 +32,8 @@ const main = async () => {
 	}
 };
 
-main();
+if (require.main === module) {
+	main();
+}
+
+module.exports = main;

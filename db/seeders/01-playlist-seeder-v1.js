@@ -9,6 +9,8 @@ const toy_playlists = (() => {
 	return null;
 })();
 const Promise = require('bluebird');
+const models = require('../models');
+const Playlist = models.Playlist;
 
 // CONSTANTS
 const include_keys = [
@@ -22,15 +24,9 @@ const include_keys = [
 	'public',
 	'snapshot_id',
 	'type',
-	'uri'
-];
-
-const associated_obj_keys = [
-	'external_urls',
-	'followers',
-	'images',
-	'owner',
-	'tracks',
+	'uri',
+	'createdAt',
+	'updatedAt',
 ];
 
 module.exports = {
@@ -40,14 +36,14 @@ module.exports = {
 				.filter(key => include_keys.includes(key))
 				.reduce((filteredObj, key) => {
 					filteredObj[key] = playlist[key];
-					filteredObj['createdAt'] = new Date();
-					filteredObj['updatedAt'] = new Date();
+					filteredObj.createdAt = new Date();
+					filteredObj.updatedAt = new Date();
 					return filteredObj;
 				}, {});
 		});
-		return queryInterface.bulkInsert('Playlists', filtered, {
-			fields: include_keys,
-		}).then(console.log(`${chalk.green('Seed success')} Playlists seeded: ${chalk.green(filtered.length)}`));
+		return Playlist.bulkCreate(filtered, { ignoreDuplicates: true, fields: include_keys })
+			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent)))
+			.then(console.log(`${chalk.green('Seed success')} Playlists seeded: ${chalk.green(filtered.length)}`));
 	},
 
 	down: (queryInterface, Sequelize) => {

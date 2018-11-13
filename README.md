@@ -1,5 +1,14 @@
 # playlistr-ml-v1
 
+## Seeding DB with Toy Data
+This will first pull all toy data from Spotify API, then use Sequelize migrations + seeders to load the db with it.
+
+1. `cd get_toy_set`
+2. `node index.js`
+3. `cd db`
+4. `../node_modules/.bin/sequelize db:migrate`
+5. `../node_modules/.bin/sequelize db:seed:all`
+
 ## TODO HIGH PRIORITY
 - [x] Get toy set with full track objects  
 - [x] Get audio features for all track objects  

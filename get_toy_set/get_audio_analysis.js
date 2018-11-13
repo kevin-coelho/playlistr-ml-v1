@@ -18,7 +18,7 @@ const main = async () => {
 			track_arr.push(...current_playlist.tracks.map(playlist_track => playlist_track.track.id));
 			return track_arr;
 		}, []);
-		Promise.map(track_ids, id => Promise.all([id, api_instance.request(getTrackAudioAnalysisConfig(id))]), {
+		return Promise.map(track_ids, id => Promise.all([id, api_instance.request(getTrackAudioAnalysisConfig(id))]), {
 			concurrency: 4,
 		})
 			.then(results => results.reduce((result_obj, result) => {
@@ -38,4 +38,9 @@ const main = async () => {
 		console.error(pe.render(err));
 	}
 };
-main();
+
+if (require.main === module) {
+	main();
+}
+
+module.exports = main;

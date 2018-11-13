@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Playlist = sequelize.define('Playlist', {
+		id: {
+			type: DataTypes.TEXT,
+			primaryKey: true,
+		},
 		collaborative: DataTypes.BOOLEAN,
 		description: DataTypes.TEXT,
 		href: DataTypes.TEXT,
@@ -9,16 +13,6 @@ module.exports = (sequelize, DataTypes) => {
 		snapshot_id: DataTypes.TEXT,
 		type: DataTypes.TEXT,
 		uri: DataTypes.TEXT,
-		createdAt: {
-			type: DataTypes.DATE,
-			field: 'beginTime',
-			defaultValue: sequelize.literal('NOW()'),
-		},
-		updatedAt: {
-			type: DataTypes.DATE,
-			field: 'beginTime',
-			defaultValue: sequelize.literal('NOW()'),
-		}
 	}, {
 		timestamps: true,
 	});

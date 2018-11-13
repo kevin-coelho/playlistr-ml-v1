@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Track = sequelize.define('Track', {
+		id: {
+			type: DataTypes.TEXT,
+			primaryKey: true,
+		},
 		href: DataTypes.TEXT,
 		is_playable: DataTypes.BOOLEAN,
 		name: DataTypes.TEXT,

@@ -9,6 +9,8 @@ const toy_playlists = (() => {
 	return null;
 })();
 const Promise = require('bluebird');
+const models = require('../models');
+const Track = models.Track;
 
 // CONSTANTS
 const include_keys = [
@@ -25,15 +27,6 @@ const include_keys = [
 	'type',
 	'uri',
 	'is_local',
-];
-
-const associated_obj_keys = [
-	'external_urls',
-	'album',
-	'artists',
-	'available_markets',
-	'tracks',
-	'external_ids',
 ];
 
 module.exports = {
@@ -53,9 +46,9 @@ module.exports = {
 					}, {});
 			})
 			.filter((track, idx, self) => self.findIndex(elem => elem.id === track.id) === idx);
-		return queryInterface.bulkInsert('Tracks', filtered, {
-			fields: include_keys,
-		}).then(console.log(`${chalk.green('Seed Success')} Tracks seeded: ${chalk.green(filtered.length)}`));
+		return Track.bulkCreate(filtered, { ignoreDuplicates: true })
+			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent)))
+			.then(console.log(`${chalk.green('Seed Success')} Tracks seeded: ${chalk.green(filtered.length)}`));
 	},
 
 	down: (queryInterface, Sequelize) => {

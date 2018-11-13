@@ -1,13 +1,23 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const AudioAnalysis = sequelize.define('AudioAnalysis', {
-		bars: DataTypes.JSONB,
-		beats: DataTypes.JSONB,
-		meta: DataTypes.JSONB,
-		sections: DataTypes.JSONB,
-		segments: DataTypes.JSONB,
-		tatums: DataTypes.JSONB,
-		track: DataTypes.JSONB,
+		trackId: {
+			type: DataTypes.TEXT,
+			references: {
+				model: 'Track',
+				key: 'id',
+			},
+		},
+		duration: DataTypes.DECIMAL(24, 12),
+		loudness: DataTypes.DECIMAL(24, 12),
+		tempo: DataTypes.DECIMAL(24, 12),
+		tempo_confidence: DataTypes.DECIMAL(24, 12),
+		time_signature: DataTypes.INTEGER,
+		time_signature_confidence: DataTypes.DECIMAL(24, 12),
+		key: DataTypes.INTEGER,
+		key_confidence: DataTypes.DECIMAL(24, 12),
+		mode: DataTypes.INTEGER,
+		mode_confidence: DataTypes.DECIMAL(24, 12),
 	}, {});
 	AudioAnalysis.associate = function(models) {
 		// associations can be defined here

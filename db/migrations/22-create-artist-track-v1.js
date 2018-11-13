@@ -32,7 +32,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE
 			}
-		});
+		}).then(() => queryInterface.addConstraint('artist_track', ['artistId', 'trackId'], {
+			type: 'unique',
+			name: 'artist_track_unique',
+		}));
 	},
 	down: (queryInterface, Sequelize) => {
 		return queryInterface.dropTable('artist_track');

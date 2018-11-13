@@ -10,15 +10,18 @@ const toy_audio_features = (() => {
 	process.exit(1);
 })();
 const Promise = require('bluebird');
+const models = require('../models');
+const AudioFeature = models.AudioFeature;
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		const filtered = Object.keys(toy_audio_features).reduce((a, track_id) => {
-			a.push(Object.assign(toy_audio_features[track_id], { trackId: track_id, createdAt: new Date(), updatedAt: new Date() }));
+			a.push(Object.assign(toy_audio_features[track_id], { id: track_id, trackId: track_id, createdAt: new Date(), updatedAt: new Date() }));
 			return a;
 		}, [])
 			.filter((track, idx, self) => self.findIndex(elem => elem.trackId === track.trackId) === idx);
-		return queryInterface.bulkInsert('AudioFeatures', filtered, {})
+		return AudioFeature.bulkCreate(filtered, { ignoreDuplicates: true })
+			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent.detail)))
 			.then(console.log(`${chalk.green('Seed Success')} Audio Features seeded: ${chalk.green(filtered.length)}`));
 	},
 

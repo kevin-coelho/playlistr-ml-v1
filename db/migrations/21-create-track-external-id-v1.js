@@ -32,7 +32,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE
 			}
-		});
+		}).then(() => queryInterface.addConstraint('track_external_id', ['externalId', 'trackId'], {
+			type: 'unique',
+			name: 'track_external_id_unique',
+		}));
 	},
 	down: (queryInterface, Sequelize) => {
 		return queryInterface.dropTable('track_external_id');

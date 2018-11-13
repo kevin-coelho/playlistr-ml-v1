@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Artist = sequelize.define('Artist', {
+		id: {
+			type: DataTypes.TEXT,
+			primaryKey: true,
+		},
 		href: DataTypes.TEXT,
 		name: DataTypes.TEXT,
 		popularity: DataTypes.INTEGER,

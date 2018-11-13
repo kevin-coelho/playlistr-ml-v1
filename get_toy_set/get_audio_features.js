@@ -27,7 +27,7 @@ const main = async () => {
 			}
 			return grouped_arrays;
 		}, []);
-		Promise.map(track_ids, id_array => Promise.all([id_array, api_instance.request(getTrackAudioFeaturesConfig(id_array))]).catch(err => {
+		return Promise.map(track_ids, id_array => Promise.all([id_array, api_instance.request(getTrackAudioFeaturesConfig(id_array))]).catch(err => {
 			console.error(chalk.red(`Error occurred, request ${err.config.url}`));
 			return Promise.resolve([ id_array, false ]);
 		}), { concurrency: 4 })
@@ -60,5 +60,8 @@ const main = async () => {
 	}
 };
 
-main();
-// curl -X GET "https://api.spotify.com/v1/audio-features/?ids=4JpKVNYnVcJ8tuMKjAj50A,2NRANZE9UCmPAS5XVbXL40,24JygzOLM0EmRQeGtFcIcG" -H "Authorization: Bearer {your access token}"
+if (require.main === module) {
+	main();
+}
+
+module.exports = main;

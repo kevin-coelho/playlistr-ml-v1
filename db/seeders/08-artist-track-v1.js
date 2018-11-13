@@ -10,6 +10,8 @@ const toy_playlists = (() => {
 	return null;
 })();
 const Promise = require('bluebird');
+const models = require('../models');
+const ArtistTrack = models.ArtistTrack;
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
@@ -28,7 +30,7 @@ module.exports = {
 			}, []));
 			return a;
 		}, []).filter((elem, idx, arr) => idx === arr.findIndex(e => e.trackId == elem.trackId && e.artistId == elem.artistId));
-		return queryInterface.bulkInsert('artist_track', filtered, { ignore: true })
+		return ArtistTrack.bulkCreate(filtered, { ignoreDuplicates: true })
 			.catch(err => console.error(err.parent.detail))
 			.then(() => console.log(`${chalk.green('Seed Success')} artist_track associations seeded: ${chalk.green(filtered.length)}`));
 	},

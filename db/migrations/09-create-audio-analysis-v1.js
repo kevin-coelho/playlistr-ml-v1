@@ -8,7 +8,6 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			// ASSOCIATIONS
 			trackId: {
 				allowNull: false,
 				type: Sequelize.TEXT,
@@ -26,27 +25,36 @@ module.exports = {
 			updatedAt: {
 				allowNull: false,
 				type: Sequelize.DATE
-			},			
-			bars: {
-				type: Sequelize.JSONB
 			},
-			beats: {
-				type: Sequelize.JSONB
+			duration: {
+				type: Sequelize.DECIMAL(24, 12),
 			},
-			meta: {
-				type: Sequelize.JSONB
+			loudness: {
+				type: Sequelize.DECIMAL(24, 12),
 			},
-			sections: {
-				type: Sequelize.JSONB
+			tempo: {
+				type: Sequelize.DECIMAL(24, 12),
 			},
-			segments: {
-				type: Sequelize.JSONB
+			tempo_confidence: {
+				type: Sequelize.DECIMAL(24, 12),
 			},
-			tatums: {
-				type: Sequelize.JSONB
+			time_signature: {
+				type: Sequelize.INTEGER,
 			},
-			track: {
-				type: Sequelize.JSONB
+			time_signature_confidence: {
+				type: Sequelize.DECIMAL(24, 12),
+			},
+			key: {
+				type: Sequelize.INTEGER,
+			},
+			key_confidence: {
+				type: Sequelize.DECIMAL(24, 12),
+			},
+			mode: {
+				type: Sequelize.INTEGER,
+			},
+			mode_confidence: {
+				type: Sequelize.DECIMAL(24, 12),
 			},
 		});
 	},

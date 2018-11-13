@@ -1,6 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const AudioFeature = sequelize.define('AudioFeature', {
+		id: {
+			type: DataTypes.TEXT,
+			primaryKey: true,
+		},
+		trackId: {
+			type: DataTypes.TEXT,
+			references: {
+				model: 'Tracks',
+				key: 'id',
+			},
+		},
 		danceability: DataTypes.DECIMAL(10, 12),
 		energy: DataTypes.DECIMAL(10, 12),
 		key: DataTypes.INTEGER,

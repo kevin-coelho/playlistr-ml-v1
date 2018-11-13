@@ -9,6 +9,9 @@ const toy_artists = (() => {
 	return null;
 })();
 const Promise = require('bluebird');
+const models = require('../models');
+const Genre = models.Genre;
+const ArtistGenre = models.ArtistGenre;
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
@@ -30,14 +33,13 @@ module.exports = {
 			}, []));
 			return a;
 		}, []);
-		return queryInterface.bulkInsert('Genres', genres, {})
-			.catch(err => process.exit(console.error(err.parent.detail)))
+		return Genre.bulkCreate(genres, { ignoreDuplicates: true })
+			.catch(err => console.error(err.parent.error))
 			.then(console.log(`${chalk.green('Seed Success')} Genres seeded: ${chalk.green(genres.length)}`))
-			.then(() => queryInterface.bulkInsert('artist_genre', artist_genres, {}))
-			.catch(err => process.exit(console.error(err.parent.detail)))
+			.then(() => ArtistGenre.bulkCreate(artist_genres, { ignoreDuplicates: true }))
+			.catch(err => console.error(err.parent.error))
 			.then(console.log(`${chalk.green('Seed Success')} artist_genre associations seeded: ${chalk.green(artist_genres.length)}`));
 	},
-
 	down: (queryInterface, Sequelize) => {
 		/*
 		  Add reverting commands here.

@@ -10,6 +10,8 @@ const toy_artists = (() => {
 	return null;
 })();
 const Promise = require('bluebird');
+const models = require('../models');
+const Artist = models.Artist;
 
 // CONSTANTS
 const include_keys = [
@@ -35,9 +37,9 @@ module.exports = {
 						return filteredObj;
 					}, {});
 			});
-		return queryInterface.bulkInsert('Artists', filtered, {
-			fields: include_keys,
-		}).then(console.log(`${chalk.green('Seed Success')} Artists seeded: ${chalk.green(filtered.length)}`));
+		return Artist.bulkCreate(filtered, { ignoreDuplicates: true })
+			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent)))
+			.then(console.log(`${chalk.green('Seed Success')} Artists seeded: ${chalk.green(filtered.length)}`));
 	},
 
 	down: (queryInterface, Sequelize) => {

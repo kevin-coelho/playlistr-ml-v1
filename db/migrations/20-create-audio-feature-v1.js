@@ -8,7 +8,6 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.TEXT
 			},
-			// ASSOCIATIONS
 			trackId: {
 				allowNull: false,
 				type: Sequelize.TEXT,
@@ -52,13 +51,13 @@ module.exports = {
 				type: Sequelize.DECIMAL(24, 12),
 			},
 			liveness: {
-				type: Sequelize.DataTypes.DECIMAL(24, 12),
+				type: Sequelize.DECIMAL(24, 12),
 			},
 			valence: {
-				type: Sequelize.DataTypes.DECIMAL(24, 12),
+				type: Sequelize.DECIMAL(24, 12),
 			},
 			tempo: {
-				type: Sequelize.DataTypes.DECIMAL(24, 12),
+				type: Sequelize.DECIMAL(24, 12),
 			},
 			type: {
 				type: Sequelize.TEXT,

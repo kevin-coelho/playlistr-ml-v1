@@ -24,7 +24,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE
 			}
-		});
+		}).then(() => queryInterface.addConstraint('ExternalIds', ['id', 'key', 'value'], {
+			type: 'unique',
+			name: 'external_id_unique',
+		}));
 	},
 	down: (queryInterface, Sequelize) => {
 		return queryInterface.dropTable('ExternalIds');

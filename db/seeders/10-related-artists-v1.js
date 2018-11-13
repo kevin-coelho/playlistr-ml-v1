@@ -27,23 +27,25 @@ module.exports = {
 				parser({ streamValues: false }),
 				streamObject(),
 				chunk => {
-					return Promise.map(chunk.value, artist => {
-						return Artist.upsert({
-							id: artist.id,
-							href: artist.href,
-							name: artist.name,
-							popularity: artist.popularity,
-							type: artist.type,
-							uri: artist.uri,
-							createdAt: new Date(),
-							updatedAt: new Date(),
-						}).then(() => RelatedArtist.upsert({
-							primaryArtist: chunk.key,
-							secondaryArtist: artist.id,
-							createdAt: new Date(),
-							updatedAt: new Date(),
-						}));
-					}, { concurrency: 1 }).then(() => console.log(`Loaded chunk: ${chunk.key}`));
+					const artists = chunk.value.map(artist => ({
+						id: artist.id,
+						href: artist.href,
+						name: artist.name,
+						popularity: artist.popularity,
+						type: artist.type,
+						uri: artist.uri,
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					}));
+					const relatedArtists = chunk.value.map(artist => ({
+						primaryArtist: chunk.key,
+						secondaryArtist: artist.id,
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					}));
+					return Artist.bulkCreate(artists, { ignoreDuplicates: true })
+						.then(() => RelatedArtist.bulkCreate(relatedArtists, { ignoreDuplicates: true }))
+						.then(() => console.log(`Loaded chunk: ${chunk.key}`));
 				},
 			]);
 			pipeline.on('error', err => console.log(pe.render(err)));

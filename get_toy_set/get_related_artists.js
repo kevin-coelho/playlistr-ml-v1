@@ -16,7 +16,7 @@ const main = async () => {
 		const toy_set = JSON.parse(await fs.readFileAsync(toy_playlists_artists));
 		const api_instance = await require('../api_manager');
 		const artist_ids = toy_set.map(artist => artist.id);
-		Promise.map(artist_ids, id => Promise.all([id, sleep(25).then(() => api_instance.request(getRelatedArtistConfig(id)))]), {
+		return Promise.map(artist_ids, id => Promise.all([id, sleep(25).then(() => api_instance.request(getRelatedArtistConfig(id)))]), {
 			concurrency: 1,
 		})
 			.then(results => results.reduce((result_obj, result) => {
@@ -32,4 +32,9 @@ const main = async () => {
 		console.error(pe.render(err));
 	}
 };
-main();
+
+if (require.main === module) {
+	main();
+}
+
+module.exports = main;
