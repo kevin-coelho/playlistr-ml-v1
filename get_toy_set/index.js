@@ -4,6 +4,7 @@ const PrettyError = require('pretty-error');
 const pe = new PrettyError();
 const path = require('path');
 const Promise = require('bluebird');
+const fs = require('fs');
 
 // CONSTANTS
 const { results_dir } = require('./constants');
@@ -18,8 +19,11 @@ const scripts = [
 ];
 
 // run in order
-const main = async () => {
+const main = async () => {	
 	let err_flag = false;
+	if (!fs.existsSync(path.resolve(results_dir))) {
+		fs.mkDirSync(path.resolve(results_dir));
+	}
 	console.log('Fetching entire toy set. This may take some time...');
 	try {
 		await Promise.each(scripts, script => script());
