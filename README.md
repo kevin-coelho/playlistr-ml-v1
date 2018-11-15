@@ -1,5 +1,24 @@
 # playlistr-ml-v1
 
+## Dependencies
+1. Install homebrew. [Installation Instructions](https://brew.sh/)
+2. Install pgcli, psql. Run this command: `brew install pgcli && brew install psql`
+3. Install postgres `brew install postgres`
+4. Install node `brew install node`
+5. Check that node and npm are properly installed `node -v`, `npm -v`
+6. Install yarn `npm install -g yarn`
+7. cd into this directory `cd playlistr-ml-v1`
+8. Install required packages `yarn install`
+
+## Setup the DB
+1. Start your postgres db (make sure it is installed first, see [dependencies](#dependencies) above)
+2. Start postgres `brew services start postgres`
+3. Check that postgres is running `pgcli -U $(whoami) postgres`
+4. Exit pgcli with `ctrl+D`
+5. Inside `/playlistr-ml-v1`, run this command: `yarn run init-db`
+6. Inside `/playlistr-ml-v1`, run this command: `yarn run setup-db`
+
+
 ## Seeding DB with Toy Data
 This will first pull all toy data from Spotify API, then use Sequelize migrations + seeders to load the db with it.
 
