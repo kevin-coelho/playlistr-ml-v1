@@ -5,12 +5,17 @@
   "repository": "https://github.com/kevin-coelho/playlistr-ml-v1.git",
   "author": "Kevin <kevin@kevincoelho.com>",
   "license": "MIT",
+  "scripts": {
+    "setup-db": "cd db && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && echo 'Completed db setup!'",
+    "init-db": "cd db/config && node setup"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "axios-retry": "^3.1.1",
     "bluebird": "^3.5.2",
     "btoa": "^1.2.1",
     "chalk": "^2.4.1",
+    "child-process": "^1.0.2",
     "dotenv": "^6.0.0",
     "fs": "^0.0.1-security",
     "moment": "^2.22.2",

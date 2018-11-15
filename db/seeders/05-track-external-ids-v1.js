@@ -37,7 +37,7 @@ module.exports = {
 				trackId: track.id,
 				createdAt: new Date(),
 				updatedAt: new Date(),
-			}))), { ignoreDuplicates: true })
+			})), { ignoreDuplicates: true }))
 			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent.detail)))
 			.then(console.log(`${chalk.green('Seed Success')} Track External Ids seeded: ${chalk.green(filtered.length)}`));
 	},
