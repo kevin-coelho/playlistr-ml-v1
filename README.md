@@ -15,18 +15,15 @@
 2. Start postgres `brew services start postgres`
 3. Check that postgres is running `pgcli -U $(whoami) postgres`
 4. Exit pgcli with `ctrl+D`
-5. Inside `/playlistr-ml-v1`, run this command: `yarn run init-db`
-6. Inside `/playlistr-ml-v1`, run this command: `yarn run setup-db`
 
 
 ## Seeding DB with Toy Data
 This will first pull all toy data from Spotify API, then use Sequelize migrations + seeders to load the db with it.
 
-1. `cd get_toy_set`
-2. `node index.js`
-3. `cd db`
-4. `../node_modules/.bin/sequelize db:migrate`
-5. `../node_modules/.bin/sequelize db:seed:all`
+1. Inside `/playlistr-ml-v1`, run this command: `yarn run get-toy-set`
+2. Inside `/playlistr-ml-v1`, run this command: `yarn run init-db`
+3. Inside `/playlistr-ml-v1`, run this command: `yarn run setup-db`
+4. If there are no errors, you are done! Use pgcli to login to the db and check your results.
 
 ## TODO HIGH PRIORITY
 - [x] Get toy set with full track objects  

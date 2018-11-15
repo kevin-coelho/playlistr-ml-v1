@@ -6,6 +6,7 @@
   "author": "Kevin <kevin@kevincoelho.com>",
   "license": "MIT",
   "scripts": {
+  	"get-toy-set": "cd get_toy_set && node index",
     "setup-db": "cd db && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && echo 'Completed db setup!'",
     "init-db": "cd db/config && node setup"
   },
