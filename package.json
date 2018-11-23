@@ -6,7 +6,7 @@
   "author": "Kevin <kevin@kevincoelho.com>",
   "license": "MIT",
   "scripts": {
-  	"get-toy-set": "cd get_toy_set && node index",
+    "get-toy-set": "cd get_toy_set && node index",
     "setup-db": "cd db && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && echo 'Completed db setup!'",
     "init-db": "cd db/config && node setup"
   },
@@ -15,6 +15,7 @@
     "axios-retry": "^3.1.1",
     "bluebird": "^3.5.2",
     "btoa": "^1.2.1",
+    "chai": "^4.2.0",
     "chalk": "^2.4.1",
     "child-process": "^1.0.2",
     "dotenv": "^6.0.0",

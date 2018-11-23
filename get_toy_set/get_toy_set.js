@@ -12,24 +12,20 @@ const { sleep } = require('../utils');
 
 // MAIN FUNCTION
 const main = async () => {
-	try {
-		const toy_set = JSON.parse(await fs.readFileAsync(toy_id_file));
-		const api_instance = await require('../api_manager');
-		return Promise.map(toy_set, playlist => {
-			console.log(`Processing playlist: "${playlist.name}"`);
-			return sleep(10).then(() => api_instance.request(getPlaylistConfig(playlist.id)));
-		}, { concurrency: 1 })
-			// fill out tracks we didn't catch in the first request
-			.then(results => Promise.map(results, result => Promise.all([Promise.resolve(result), pagingLoop(api_instance, result.tracks)])))
-			.then(results => results.map(([result, all_tracks]) => Object.assign(result, { tracks: all_tracks })))
-			.then(results => 
-				fs.writeFileAsync(toy_playlists_full, JSON.stringify(results))
-					.then(() => console.log(`[${chalk.green(toy_playlists_full)}] Wrote toy playlists to file: ${chalk.green(results.length)}`))
-			)
-			.catch(err => console.error(pe.render(err)));
-	} catch (err) {
-		console.error(pe.render(err));
-	}
+	const toy_set = JSON.parse(await fs.readFileAsync(toy_id_file));
+	const api_instance = await require('../api_manager').spotify();
+	return Promise.map(toy_set, playlist => {
+		console.log(`Processing playlist: "${playlist.name}"`);
+		return sleep(10).then(() => api_instance.request(getPlaylistConfig(playlist.id)));
+	}, { concurrency: 1 })
+		// fill out tracks we didn't catch in the first request
+		.then(results => Promise.map(results, result => Promise.all([Promise.resolve(result), pagingLoop(api_instance, result.tracks)])))
+		.then(results => results.map(([result, all_tracks]) => Object.assign(result, { tracks: all_tracks })))
+		.then(results =>
+			fs.writeFileAsync(toy_playlists_full, JSON.stringify(results))
+				.then(() => console.log(`[${chalk.green(toy_playlists_full)}] Wrote toy playlists to file: ${chalk.green(results.length)}`))
+		)
+		.catch(err => console.error(pe.render(err)));
 };
 
 if (require.main === module) {

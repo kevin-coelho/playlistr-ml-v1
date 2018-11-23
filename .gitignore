@@ -3,6 +3,7 @@ api_manager/env
 
 # Results
 get_toy_set/results
+get_nyt_music/results
 
 # Logs
 logs
