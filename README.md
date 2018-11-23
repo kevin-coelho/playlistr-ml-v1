@@ -26,18 +26,22 @@ This will first pull all toy data from Spotify API, then use Sequelize migration
 4. If there are no errors, you are done! Use pgcli to login to the db and check your results.
 
 ## TODO HIGH PRIORITY
+- [ ] Select user set playlists  
+- [ ] Get full user set  
+- [ ] Create User migration + seeder (for playlist owners)  
+- [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
+- [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
+- [ ] Album seeder  
+- [ ] Get album genres  
 - [x] Get toy set with full track objects  
 - [x] Get audio features for all track objects  
 - [x] Get artist objects for all tracks  
 - [x] Get audio analysis for all tracks  
 - [x] Track playlist association  
-- [ ] CSV exporter v1  
 - [x] Migration + seeder for artists in db  
 - [x] Artist track association  
 - [x] Get related artists for all artists  
 - [x] Get artist genres  
-- [ ] Album seeder  
-- [ ] Get album genres  
 
 ## Features
 ### Audio Analysis
@@ -67,9 +71,8 @@ key	int	The key the track is in. Integers map to pitches using standard Pitch Cl
 - valence	float	A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).  
 
 ## TODO LOW PRIORITY
-- [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
-- [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
 - [ ] Create playlist-track model (query by who added what track and when it was added)  
+- [ ] CSV exporter v1  
 
 
 ## Sequelize Model Generate Command

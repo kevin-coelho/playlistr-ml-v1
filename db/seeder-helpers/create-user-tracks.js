@@ -3,9 +3,9 @@
 
 const chalk = require('chalk');
 const fs = require('fs');
-const toy_path = '../get_toy_set/results/toy_data_set_playlists_full.json';
-const toy_playlists = (() => {
-	if (fs.existsSync(toy_path)) return JSON.parse(fs.readFileSync(toy_path));
+const user_path = '../get_user_set/results/user_data_set_playlists_full.json';
+const user_playlists = (() => {
+	if (fs.existsSync(user_path)) return JSON.parse(fs.readFileSync(user_path));
 	return null;
 })();
 const Promise = require('bluebird');
@@ -29,7 +29,7 @@ const include_keys = [
 	'is_local',
 ];
 
-const filtered = toy_playlists.reduce((a, playlist) => {
+const filtered = user_playlists.reduce((a, playlist) => {
 	a.push(...playlist.tracks.map(playlist_track => playlist_track.track));
 	return a;
 }, [])
@@ -65,6 +65,6 @@ module.exports = {
 			id: {
 				[Op.or]: filtered.map(track => track.id),
 			},
-		}, {}).then(() => console.log(`Removed toy set tracks. Count: ${chalk.red(toy_playlists.length)}`));
+		}, {}).then(() => console.log(`Removed user tracks. Count: ${chalk.red(user_playlists.length)}`));
 	}
 };

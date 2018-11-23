@@ -54,6 +54,11 @@ module.exports = {
 		  Example:
 		  return queryInterface.bulkDelete('Person', null, {});
 		*/
-		return queryInterface.bulkDelete('Playlists', null, {});
+		const Op = Sequelize.Op;
+		return queryInterface.bulkDelete('Playlists', {
+			id: {
+				[Op.or]: toy_playlists.map(playlist => playlist.id),
+			},
+		}, {}).then(() => console.log(`Removed toy set playlists. Count: ${chalk.red(toy_playlists.length)}`));
 	}
 };

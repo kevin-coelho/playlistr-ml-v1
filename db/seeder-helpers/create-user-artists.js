@@ -4,9 +4,9 @@
 const chalk = require('chalk');
 const fs = require('fs');
 const { filterUnique } = require('../../utils');
-const toy_path = '../get_toy_set/results/toy_data_set_artists.json';
-const toy_artists = (() => {
-	if (fs.existsSync(toy_path)) return JSON.parse(fs.readFileSync(toy_path));
+const user_path = '../get_user_set/results/user_data_set_artists.json';
+const user_artists = (() => {
+	if (fs.existsSync(user_path)) return JSON.parse(fs.readFileSync(user_path));
 	return null;
 })();
 const Promise = require('bluebird');
@@ -24,7 +24,7 @@ const include_keys = [
 	'uri',
 ];
 
-const filtered = filterUnique(toy_artists, 'id')
+const filtered = filterUnique(user_artists, 'id')
 	.map(artist => {
 		return Object.keys(artist)
 			.filter(key => include_keys.includes(key))
@@ -57,6 +57,6 @@ module.exports = {
 			id: {
 				[Op.or]: filtered.map(artist => artist.id),
 			},
-		}, {}).then(() => console.log(`Removed toy set artists. Count: ${chalk.red(filtered.length)}`));
+		}, {}).then(() => console.log(`Removed user set artists. Count: ${chalk.red(filtered.length)}`));
 	}
 };

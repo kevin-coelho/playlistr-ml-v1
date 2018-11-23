@@ -37,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
 		Playlist.belongsToMany(models.Track, {
 			as: 'playlist',
 			through: 'playlist_track',
+			onDelete: 'set null',
+			onUpdate: 'cascade',
+		});
+		Playlist.belongsToMany(models.DataSet, {
+			as: 'dataset_playlists',
+			through: 'dataset_playlist',
+			onDelete: 'set null',
+			onUpdate: 'cascade',
 		});
 	};
 	return Playlist;
