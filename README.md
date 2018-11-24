@@ -26,8 +26,9 @@ This will first pull all toy data from Spotify API, then use Sequelize migration
 4. If there are no errors, you are done! Use pgcli to login to the db and check your results.
 
 ## TODO HIGH PRIORITY
-- [ ] Select user set playlists  
-- [ ] Get full user set  
+- [x] Select user set playlists  
+- [ ] Rewrite get audio analysis to use streams, avoid heap overload  
+- [ ] Get full user set  (in progress)
 - [ ] Create User migration + seeder (for playlist owners)  
 - [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
 - [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  

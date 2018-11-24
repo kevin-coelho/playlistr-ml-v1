@@ -2,85 +2,406 @@
 {
 	"id": "2rLjogcCFPCkL05w9WxVRJ",
 	"name": "indie soundcloud",
-	"user": "kpocket",
+	"user": "kpocket"
 },
 {
 	"id": "2J94J1YIMxbld50ClrPgEt",
 	"name": "mamamia",
-	"user": "kpocket",
+	"user": "kpocket"
 },
 {
-	"id": "37i9dQZF1DX7KNKjOK0o75",
-	"name": "Have a Great Day!",
+	"id": "5Y5dEyciQs5Fyj2gQSZNOb",
+	"name": "sad songs",
+	"user": "kpocket"
 },
 {
-	"id": "37i9dQZF1DX2FsCLsHeMrM",
-	"name": "Kitchen Swagger",
+	"id": "09mKsduLosXxLDC3d2IwZ1",
+	"name": "rock n roll",
+	"user": "kpocket"
 },
 {
-	"id": "37i9dQZF1DWSlw12ofHcMM",
-	"name": "Swagger",
-	"tracks":
-	{
-		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DWSlw12ofHcMM/tracks",
-		"total": 95
-	}
+	"id": "6ufucgcP5dBcZsCWM4mRNV",
+	"name": "Work Playlist",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DXaJZdVx8Fwkq",
-	"name": "Sad Vibe"
+	"id": "7eUzxWYDLHb1RaZr4eS7qO",
+	"name": "domesticated antelope",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DX4E3UdUs7fUx",
-	"name": "Afternoon Acoustic",
-	"tracks":
-	{
-		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX4E3UdUs7fUx/tracks",
-		"total": 86
-	}
+	"id": "2DHHblOyILEoEKiEDOq5zv",
+	"name": "'Nam",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DXarebqD2nAVg",
-	"name": "Tender"
+	"id": "6scWyUnS5VfHGMsUhcxTbi",
+	"name": "Silicon",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DX0SM0LYsmbMT",
-	"name": "Jazz Vibes",
-	"tracks":
-	{
-		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX0SM0LYsmbMT/tracks",
-		"total": 200
-	}
+	"id": "33mQ62LuLkaVfhV0rb8rR0",
+	"name": "Selenium",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DWVEvzGeX3eRs",
-	"name": "'90s Baby Makers",
-	"tracks":
-	{
-		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DWVEvzGeX3eRs/tracks",
-		"total": 48
-	}
+	"id": "0EJ6pHVE3lbjcEca925bVY",
+	"name": "Germanium",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DXb1IUaS6F7Z8",
-	"name": "Celtic Punk"
+	"id": "5xx03VhralGevTkr54OA5s",
+	"name": "Iridium",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DWU2LcZVHsTdv",
-	"name": "Country by the Grace of God",
-	"tracks":
-	{
-		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DWU2LcZVHsTdv/tracks",
-		"total": 51
-	}
+	"id": "0lzCIVyrq7q2LstpazfPmh",
+	"name": "Silver",
+	"user": "mizrahy"
 },
 {
-	"id": "37i9dQZF1DX7OIddoQVdRt",
-	"name": "Spread the Gospel",
-	"tracks":
-	{
-		"href": "https://api.spotify.com/v1/playlists/37i9dQZF1DX7OIddoQVdRt/tracks",
-		"total": 50
-	}
+	"id": "4h37SqJ5uHktZdC71VjiNi",
+	"name": "Sodium",
+	"user": "mizrahy"
+},
+{
+	"id": "4A6PA9Km3SUy9Wdfy9OWg0",
+	"name": "The good shit",
+	"user": "mizrahy"
+},
+{
+	"id": "5sZe2gXKiRqv0DMsvnp99s",
+	"name": "Snow Ball",
+	"user": "mizrahy"
+},
+{
+	"id": "2JUO2I4QxPLO7OYbUhncEk",
+	"name": "DISCOTHEQUE 1996",
+	"user": "mizrahy"
+},
+{
+	"id": "49lnvcVXkKa3MFBdjYxhSN",
+	"name": "Road trips and other itineraries",
+	"user": "mizrahy"
+},
+{
+	"id": "6uiEYK5mBzRXpDf3arnoNF",
+	"name": "Dance Girl X-Treme",
+	"user": "mizrahy"
+},
+{
+	"id": "7ADN3HKZH8iNWnbLr4xU0e",
+	"name": "Princess Feel Good",
+	"user": "mizrahy"
+},
+{
+	"id": "38yKKqufYaUzeSAJD64AmC",
+	"name": "Fresno Fucboi",
+	"user": "mizrahy"
+},
+{
+	"id": "2FKL7IFasdL46CrakrI2E8",
+	"name": "Loud AF",
+	"user": "mizrahy"
+},
+{
+	"id": "1jsDuKefIzTHTSJmfS65UX",
+	"name": "Titan Fall Noob",
+	"user": "mizrahy"
+},
+{
+	"id": "6VWPJ0uIIFCqlarddwQ933",
+	"name": "The Demagorgon",
+	"user": "mizrahy"
+},
+{
+	"id": "3obKl4EWa6NzZlVAd4ljV6",
+	"name": "Starlord_24",
+	"user": "mizrahy"
+},
+{
+	"id": "3Qioyu0je2qGkx8f1s31fd",
+	"name": "Starlord_44",
+	"user": "mizrahy"
+},
+{
+	"id": "3KA5TZ6xJ44X0yEkxmicXq",
+	"name": "THE MOTHER FUCKING BLENDER",
+	"user": "mizrahy"
+},
+{
+	"id": "6Js4ve8AM12rOqFWLmjSV5",
+	"name": "Baggenheim + Sissyfus",
+	"user": "mizrahy"
+},
+{
+	"id": "4k4UlQ7ooUqMeMvPP6W3br",
+	"name": "Free, Wild and Young",
+	"user": "mizrahy"
+},
+{
+	"id": "1PZSLqmXlmeENwwuOs5M9j",
+	"name": "Basketballs and Typewriters",
+	"user": "mizrahy"
+},
+{
+	"id": "13OKICsts699kG1sYeCQSt",
+	"name": "Clueless in this Genre",
+	"user": "mizrahy"
+},
+{
+	"id": "4syURvc7zJgbMua9ACJKZy",
+	"name": "Club can't Handel",
+	"user": "mizrahy"
+},
+{
+	"id": "17CaCYr9B5PetW3IkN9mix",
+	"name": "Alan for President",
+	"user": "mizrahy"
+},
+{
+	"id": "4uWPIA0wdWeNSGpJ3aoltq",
+	"name": "BLANE-O",
+	"user": "mizrahy"
+},
+{
+	"id": "1EcX0pOr7DqGewzFumPCLk",
+	"name": "Julianne's V-Day HW Mixtape",
+	"user": "mizrahy"
+},
+{
+	"id": "3cZnmt8JVAlF1eMJyI8mGy",
+	"name": "Wild, Free, and Young",
+	"user": "mizrahy"
+},
+{
+	"id": "02XT4oEUh95wnVNXgwUyEK",
+	"name": "Clueless Vol 3",
+	"user": "mizrahy"
+},
+{
+	"id": "1uFpMkxCkhiPYIpB89T4Y9",
+	"name": "KEBIN OTRAVEZ",
+	"user": "mizrahy"
+},
+{
+	"id": "7rgOexQa65tdUI7f3JSZCK",
+	"name": "Tejas",
+	"user": "mizrahy"
+},
+{
+	"id": "6EfJ0fo8HQSul7jJ3NqjBg",
+	"name": "The Beer Queen",
+	"user": "mizrahy"
+},
+{
+	"id": "2hUadZj7TUEaZ0etHBAMlm",
+	"name": "Vous parlez Francaise?",
+	"user": "mizrahy"
+},
+{
+	"id": "5sJiLpEoZT1GJCARDiorzT",
+	"name": "COMETS!!!",
+	"user": "mizrahy"
+},
+{
+	"id": "6JMzE9sjrbrbiEm7UJJJjv",
+	"name": "Cobalt",
+	"user": "mizrahy"
+},
+{
+	"id": "1dwaVmMx2c8IkoBiySLH9K",
+	"name": "Gold",
+	"user": "mizrahy"
+},
+{
+	"id": "7r3iBpbsnJUfNnTy4pt79Z",
+	"name": "2017",
+	"user": "micah"
+},
+{
+	"id": "7GW7LR6ddmhQWt45eQCTLd",
+	"name": "sounds",
+	"user": "kristen"
+},
+{
+	"id": "4xlfNzLNdw0QvPMleBOuCg",
+	"name": "cuddles for the mind (1/29)",
+	"user": "kristen"
+},
+{
+	"id": "4sMZazCkytTs3qjUBEBdtl",
+	"name": "(1/23) ur fckin good",
+	"user": "kristen"
+},
+{
+	"id": "4Zg1igTGWGVKWwFV9N7bp3",
+	"name": "Jump around your room",
+	"user": "kristen"
+},
+{
+	"id": "5JjyZF3hndO7UVt6PcK6Vt",
+	"name": "warm n low",
+	"user": "kristen"
+},
+{
+	"id": "15L4Uc5IYRgHBpA3DMhf08",
+	"name": "eeaaasy",
+	"user": "kristen"
+},
+{
+	"id": "6ObtmjuyPYr5PGABXb90uh",
+	"name": "IT'S TOO HOT",
+	"user": "kristen"
+},
+{
+	"id": "0gtyJSkH2WqyOogVl127MP",
+	"name": "R&B Daydream",
+	"user": "chelsea"
+},
+{
+	"id": "3zMcrw4LgTJ9QL5gezl2bT",
+	"name": "5th and",
+	"user": "Danny Brennan (via jay evans)"
+},
+{
+	"id": "3FYbU26Of9EXwrmcA8J9ZP",
+	"name": "stank face",
+	"user": "Donald Duberstein (jacob)"
+},
+{
+	"id": "5ryjXuoKfWH7WkXM3HAcFL",
+	"name": "real good shit",
+	"user": "Donald Duberstein (jacob)"
+},
+{
+	"id": "6HEegfWHhUcytwQFAm1QbK",
+	"name": "Blonded",
+	"user": "Donald Duberstein (jacob)"
+},
+{
+	"id": "3lIJYh3IcG2k9kGKdXaDQy",
+	"name": "moist",
+	"user": "Donald Duberstein (jacob)"
+},
+{
+	"id": "5kDKYKjcLExxUwaEAcxVeX",
+	"name": "summah",
+	"user": "amel"
+},
+{
+	"id": "3Iz9SjmI4ribQLAElaFfM3",
+	"name": "Balcony",
+	"user": "Sarah Elder (amel)"
+},
+{
+	"id": "3CA50FfUIhtSlSNoAtzb0o",
+	"name": "coO0oOol",
+	"user": "amel"
+},
+{
+	"id": "1YxkvoyIsVgoHUIMn9XZF1",
+	"name": "Jives 4 Drives",
+	"user": "Sarah Elder (amel)"
+},
+{
+	"id": "2AK8REnIvItoqb0URI27U2",
+	"name": "metamorphosis",
+	"user": "Sarah Elder (amel)"
+},
+{
+	"id": "5QHrQWc2xVW06H4Q0Kl3zC",
+	"name": "On Melancholy Hill",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "3ZApr53Rcu2oKLPyxMvoVp",
+	"name": "The Rains of Castamere",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "3XK9bgvEHHyjW6y0QyaDlK",
+	"name": "Magnolia",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "59l93X3SqyFX9dOWo4zQyd",
+	"name": "Rainy Summer Day",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "4rBgvUezEVJvB9e7szf7OI",
+	"name": "Death and All His Friends",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "5F3hjnweqp5dPo32UgHfLc",
+	"name": "Modern Love",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "1BCQ8VqxZXO5VLmxHhKwsv",
+	"name": "Wolf At the Door",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "0EWzMU79HzPWXTNZHgHbOA",
+	"name": "Winston Boy",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "2hLUHn9zQtoBaYqnxVO0a0",
+	"name": "Dank Jams Vol IV",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "4AxN5M2Aqytk2RKTkQGqZD",
+	"name": "The Winner Is",
+	"user": "Myles Billard (amel)"	
+},
+{
+	"id": "6M13St8pX9zx0juYt5dtPt",
+	"name": "Autumn Sweater",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "6hSMxWxfrjMgsgRjPPQsXW",
+	"name": "More News from Nowhere",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "15WXHOEFQIsx2b3GaL8tVn",
+	"name": "Sea of Love",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "2qMDR119IgYHxTAsnCRsuz",
+	"name": "These Days",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "5T3Qi8saPqybn8z73p7ZVA",
+	"name": "Heroes",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "7ieDyHF2De3QBjlvhZSdGf",
+	"name": "Headful of Doubt",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "2DOVtoN2Tz7oSBWMGMgIh4",
+	"name": "Happy birthday/ I hate you",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "1FWb1LXCIrvy7UGs6gM1BY",
+	"name": "Love is a History of Untimely Goodbyes/ a Belated Birthday Wish",
+	"user": "Myles Billard (amel)"
+},
+{
+	"id": "6P365QwC6DbH0IkQ0DRevl",
+	"name": "New Stuff",
+	"user": "johnny"
 }
 ]

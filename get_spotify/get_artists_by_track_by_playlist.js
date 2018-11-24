@@ -19,7 +19,7 @@ const main = async (playlists_json_file, outfile, err_file) => {
 			return ids;
 		}, []));
 		return artist_ids;
-	}, []).filter((elem, idx, arr) => idx === arr.findIndex(e => e === elem));
+	}, []).filter((elem, idx, arr) => idx === arr.findIndex(e => e === elem)).filter(elem => elem);
 	console.log(`Unique artist ids found: ${chalk.yellow(artist_ids.length)}`);
 	const batched_ids = arrayToBatches(artist_ids, batchSizeLimit);
 	return Promise.map(batched_ids, id_array => Promise.all([id_array, api_instance.request(getArtistConfig(id_array))])

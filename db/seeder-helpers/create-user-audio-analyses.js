@@ -14,7 +14,7 @@ const AudioAnalysis = models.AudioAnalysis;
 
 // CONSTANTS
 const user_path = '../get_user_set/results/user_data_set_tracks_audio_analysis.json';
-if (!fs.existsSync(user_path)) throw new Error(`[${user_path}] Toy set not found`);
+if (!fs.existsSync(user_path)) throw new Error(`[${user_path}] Data file not found.`);
 const Promise = require('bluebird');
 const include_keys = [
 	'duration',

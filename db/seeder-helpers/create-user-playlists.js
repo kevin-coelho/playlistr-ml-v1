@@ -51,4 +51,6 @@ const down = (queryInterface, Sequelize) => {
 	}, {}).then(() => console.log(`Removed user playlists. Count: ${chalk.red(user_playlists.length)}`));
 };
 
+console.log('Create user playlist loaded.');
+
 module.exports = { up, down };

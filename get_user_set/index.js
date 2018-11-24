@@ -22,6 +22,7 @@ const {
 	user_playlists_audio_analysis,
 	user_playlists_audio_features,
 	audio_features_errors,
+	audio_analysis_errors,
 	user_playlists_artists,
 	artists_errors,
 	user_playlists_related_artists,
@@ -33,7 +34,7 @@ const scripts = [
 	[get_playlists, [user_id_file, user_playlists_full]],
 	[get_artists_by_track_by_playlist, [user_playlists_full, user_playlists_artists, artists_errors]],
 	[get_related_artists, [user_playlists_artists, user_playlists_related_artists]],
-	[get_audio_analysis_by_playlist, [user_playlists_full, user_playlists_audio_analysis]],
+	[get_audio_analysis_by_playlist, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
 	[get_audio_features_by_playlist, [user_playlists_full, user_playlists_audio_features, audio_features_errors]]
 ];
 

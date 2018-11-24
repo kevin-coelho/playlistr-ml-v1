@@ -23,7 +23,10 @@ const api_instance = axios.create({
 
 axiosRetry(api_instance, {
 	retries: 3,
-	retryDelay: axiosRetry.exponentialDelay,
+	retryDelay: (retryCount) => {
+		console.log(`Axios request fail. Retrying... [${chalk.red(retryCount)}]`);
+		return axiosRetry.exponentialDelay;
+	},
 	shouldResetTimeout: true,
 });
 

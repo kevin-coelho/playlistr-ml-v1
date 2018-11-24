@@ -22,7 +22,7 @@ const main = async (id_file, outfile) => {
 		.then(results => results.map(([result, all_tracks]) => Object.assign(result, { tracks: all_tracks })))
 		.then(results =>
 			fs.writeFileAsync(outfile, JSON.stringify(results))
-				.then(() => console.log(`[${chalk.green(outfile)}] Wrote toy playlists to file: ${chalk.green(results.length)}`))
+				.then(() => console.log(`[${chalk.green(outfile)}] Wrote playlists to file: ${chalk.green(results.length)}`))
 		)
 		.catch(err => console.error(pe.render(err)));
 };
