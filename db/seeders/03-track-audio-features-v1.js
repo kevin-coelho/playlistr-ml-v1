@@ -22,7 +22,10 @@ const filtered = Object.keys(toy_audio_features).reduce((a, track_id) => {
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return AudioFeature.bulkCreate(filtered, { ignoreDuplicates: true })
-			.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent.detail)))
+			.catch(err => {
+				console.log(`${chalk.red('Seed failed.')}`, err.parent.detail);
+				return Promise.reject(err);
+			})
 			.then(console.log(`${chalk.green('Seed Success')} Audio Features seeded: ${chalk.green(filtered.length)}`));
 	},
 

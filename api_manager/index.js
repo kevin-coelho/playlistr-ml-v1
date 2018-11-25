@@ -19,7 +19,7 @@ require('dotenv').config({ path:  env_path });
 try {
 	assert(process.env.SPOTIFY_CLIENT_ID, 'Error! Required env variable not present: SPOTIFY_CLIENT_ID');
 	assert(process.env.SPOTIFY_CLIENT_SECRET, 'Error! Required env variable not present: SPOTIFY_CLIENT_SECRET');
-	assert(process.env.NYTIMES_API_KEY, 'Error! Required env variable not present: NYTIMES_API_KEY');
+//	assert(process.env.NYTIMES_API_KEY, 'Error! Required env variable not present: NYTIMES_API_KEY');
 } catch (err) {
 	console.log(pe.render(err));
 	process.exit(1);

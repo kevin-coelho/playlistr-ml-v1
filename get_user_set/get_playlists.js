@@ -8,24 +8,23 @@ const fs = require('fs');
 
 // MODULE DEPENDENCIES
 const {
-	get_audio_analysis_by_playlist_stream,
+	get_playlists,
 } = require('../get_spotify');
 
 // CONSTANTS
 const {
+	user_id_file,
 	user_playlists_full,
-	user_playlists_audio_analysis,
-	audio_analysis_errors,
 	results_dir,
 } = require('./constants');
 
 // SCRIPTS TO RUN
 const scripts = [
-	[get_audio_analysis_by_playlist_stream, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
+	[get_playlists, [user_id_file, user_playlists_full]],
 ];
 
 // run in order
-const main = async () => {
+const main = async () => {	
 	let err_flag = false;
 	if (!fs.existsSync(path.resolve(results_dir))) {
 		fs.mkdirSync(path.resolve(results_dir));
