@@ -2,7 +2,7 @@
 
 ## Dependencies
 1. Install homebrew. [Installation Instructions](https://brew.sh/)
-2. Install pgcli, psql. Run this command: `brew install pgcli && brew install psql`
+2. Install pgcli. Run this command: `brew install pgcli`
 3. Install postgres `brew install postgres`
 4. Install node `brew install node`
 5. Check that node and npm are properly installed `node -v`, `npm -v`
@@ -22,13 +22,14 @@ This will first pull all toy data from Spotify API, then use Sequelize migration
 
 1. Inside `/playlistr-ml-v1`, run this command: `yarn run get-toy-set`
 2. Inside `/playlistr-ml-v1`, run this command: `yarn run init-db`
-3. Inside `/playlistr-ml-v1`, run this command: `yarn run setup-db`
+3. Inside `/playlistr-ml-v1`, run this command: `yarn run setup-db`  
+If you get an error, `psql:./sql_temp.sql:2: NOTICE:  role "playlistr_ml_v1" does not exist, skipping`, ignore it.  
 4. If there are no errors, you are done! Use pgcli to login to the db and check your results.
 
 ## TODO HIGH PRIORITY
 - [x] Select user set playlists  
-- [ ] Rewrite get audio analysis to use streams, avoid heap overload  
-- [ ] Get full user set  (in progress)
+- [x] Rewrite get audio analysis to use streams, avoid heap overload  
+- [ ] Get full user set  (in progress)  
 - [ ] Create User migration + seeder (for playlist owners)  
 - [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
 - [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  

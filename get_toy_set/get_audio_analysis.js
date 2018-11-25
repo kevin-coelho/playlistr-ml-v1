@@ -13,15 +13,15 @@ const {
 
 // CONSTANTS
 const {
-	user_playlists_full,
-	user_playlists_audio_analysis,
+	toy_playlists_full,
+	toy_playlists_audio_analysis,
 	audio_analysis_errors,
 	results_dir,
 } = require('./constants');
 
 // SCRIPTS TO RUN
 const scripts = [
-	[get_audio_analysis_by_playlist_stream, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
+	[get_audio_analysis_by_playlist_stream, [toy_playlists_full, toy_playlists_audio_analysis, audio_analysis_errors]],
 ];
 
 // run in order
@@ -30,7 +30,7 @@ const main = async () => {
 	if (!fs.existsSync(path.resolve(results_dir))) {
 		fs.mkdirSync(path.resolve(results_dir));
 	}
-	console.log('Fetching entire user set. This may take some time...');
+	console.log('Fetching entire toy set. This may take some time...');
 	try {
 		await Promise.each(scripts, ([script, args]) => script(...args));
 	} catch (err) {
