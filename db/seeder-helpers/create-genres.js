@@ -19,6 +19,7 @@ module.exports = (data_file) => {
 	}, [])
 		.filter((genre, idx, arr) => idx === arr.findIndex(elem => elem === genre))
 		.map(genre => ({ name: genre, createdAt: new Date(), updatedAt: new Date() }));
+
 	const artist_genres = artists_data.reduce((a, artist) => {
 		a.push(...artist.genres.reduce((a, genre) => {
 			a.push({
@@ -32,14 +33,26 @@ module.exports = (data_file) => {
 		return a;
 	}, []);
 
+	let artist_genre_count = artist_genres.length;
+
 	return {
 		up: (queryInterface, Sequelize) => {
 			return Genre.bulkCreate(genres, { ignoreDuplicates: true })
 				.catch(err => console.error(err.parent.error))
 				.then(console.log(`${chalk.green('Seed Success')} Genres seeded: ${chalk.green(genres.length)}`))
-				.then(() => ArtistGenre.bulkCreate(artist_genres, { ignoreDuplicates: true }))
-				.catch(err => console.error(err.parent.error))
-				.then(console.log(`${chalk.green('Seed Success')} artist_genre associations seeded: ${chalk.green(artist_genres.length)}`));
+				.then(() => Promise.map(artist_genres, artist_genre => ArtistGenre.bulkCreate([artist_genre], { ignoreDuplicates: true })
+					.catch(err => {
+						artist_genre_count = artist_genre_count - 1;
+						console.error(chalk.red(`${err.parent.detail}`));
+						return Promise.resolve();						
+					}), { concurrency: 4 }))
+				.catch(err => {
+					console.error(pe.render(err));
+					console.error(`${chalk.red('Seed failed.')}`);
+					return Promise.reject(err);
+				})
+				.then(console.log(`${chalk.green('Seed Success')} Genres seeded: ${chalk.green(genres.length)}`))
+				.then(console.log(`${chalk.green('Seed Success')} artist_genre associations seeded: ${chalk.green(artist_genre_count)}`));
 		},
 		down: (queryInterface, Sequelize) => {
 			/*

@@ -38,13 +38,20 @@ module.exports = (data_file) => {
 
 	return {
 		up: (queryInterface, Sequelize) => {
+			let count = filtered.length;
 
-			return Artist.bulkCreate(filtered, { ignoreDuplicates: true })
+			return Promise.map(filtered, artist => Artist.bulkCreate([artist], { ignoreDuplicates: true })
 				.catch(err => {
-					console.log(`${chalk.red('Seed failed.')}`, err.parent);
+					count = count - 1;
+					console.error(chalk.red(`${err.parent.detail}`));
+					return Promise.resolve();
+				}), { concurrency: 4 })
+				.then(console.log(`${chalk.green('Seed Success')} Artists seeded: ${chalk.green(count)}`))
+				.catch(err => {
+					console.error(`${chalk.red('Seed failed.')}`, err.parent);
 					return Promise.reject(err);
-				})
-				.then(console.log(`${chalk.green('Seed Success')} Artists seeded: ${chalk.green(filtered.length)}`));
+				});
+
 		},
 
 		down: (queryInterface, Sequelize) => {

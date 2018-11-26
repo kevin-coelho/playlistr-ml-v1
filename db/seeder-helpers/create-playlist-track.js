@@ -20,19 +20,27 @@ module.exports = (data_file) => {
 		return a;
 	}, []).filter(obj => obj.trackId);
 
-	const filtered = tracks_playlist_ids.map(track => Object.assign(track, {
+	const playlist_tracks = tracks_playlist_ids.map(track => Object.assign(track, {
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	}));
 
+	let count = playlist_tracks.length;
+
 	return {
 		up: (queryInterface, Sequelize) => {
-			return PlaylistTrack.bulkCreate(filtered, { ignoreDuplicates: true })
+			return Promise.map(playlist_tracks, playlist_track => PlaylistTrack.bulkCreate([playlist_track], { ignoreDuplicates: true })
 				.catch(err => {
-					console.log(`${chalk.red('Seed failed.')}`, err.parent.detail);
+					count = count - 1;
+					console.error(chalk.red(`${err.parent.detail}`));
+					return Promise.resolve();
+				}), { concurrency: 4 })
+				.catch(err => {
+					console.error(pe.render(err));
+					console.error(`${chalk.red('Seed failed.')}`);
 					return Promise.reject(err);
 				})
-				.then(console.log(`${chalk.green('Seed Success')} Track playlist associations inserted: ${chalk.green(filtered.length)}`));
+				.then(console.log(`${chalk.green('Seed Success')} Playlist track associations inserted: ${chalk.green(count)}`));
 		},
 
 		down: (queryInterface, Sequelize) => {

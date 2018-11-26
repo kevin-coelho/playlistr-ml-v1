@@ -42,19 +42,13 @@ module.exports = (data_file) => {
 							secondaryArtist: artist.id,
 							createdAt: new Date(),
 							updatedAt: new Date(),
-						}));
-						const Op = Sequelize.Op;
+						}));						
 						return Artist.bulkCreate(artists, { ignoreDuplicates: true })
-							.then(() => Artist.findAll({
-								where: {
-									id: {
-										[Op.or]: relatedArtists.map(artist => artist.primaryArtist),
-									},
-								},
-								raw: true
-							}))
-							.then((artists) => relatedArtists.filter(artist => artists.includes(artist)))
-							.then((related) => RelatedArtist.bulkCreate(related, { ignoreDuplicates: true }))
+							.then(() => Promise.map(relatedArtists, related_artist => RelatedArtist.bulkCreate([related_artist], { ignoreDuplicates: true })
+								.catch(err => {
+									console.error(chalk.red(err.parent.detail));
+									return Promise.resolve();
+								}), { concurrency: 4 }))
 							.then(() => console.log(`Loaded chunk: ${chunk.key}`));
 					},
 				]);

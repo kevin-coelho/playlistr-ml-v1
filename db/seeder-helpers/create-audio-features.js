@@ -20,11 +20,21 @@ module.exports = (data_file) => {
 	}, [])
 		.filter((track, idx, self) => self.findIndex(elem => elem.trackId === track.trackId) === idx);
 
+	let count = filtered.length;
+
 	return {
 		up: (queryInterface, Sequelize) => {
-			return AudioFeature.bulkCreate(filtered, { ignoreDuplicates: true })
-				.catch(err => process.exit(console.log(`${chalk.red('Seed failed.')}`, err.parent.detail)))
-				.then(console.log(`${chalk.green('Seed Success')} Audio Features seeded: ${chalk.green(filtered.length)}`));
+			return Promise.map(filtered, audioFeature => AudioFeature.bulkCreate([audioFeature], { ignoreDuplicates: true })
+				.catch(err => {
+					count = count - 1;
+					console.error(chalk.red(`${err.parent.detail}`));
+					return Promise.resolve();
+				}), { concurrency: 4 })
+				.then(console.log(`${chalk.green('Seed Success')} Audio Features seeded: ${chalk.green(count)}`))
+				.catch(err => {
+					console.log(`${chalk.red('Seed failed.')}`, err.parent.detail);
+					return Promise.reject(err);
+				});
 		},
 		down: (queryInterface, Sequelize) => {
 			/*

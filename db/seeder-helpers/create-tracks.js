@@ -1,11 +1,5 @@
 const chalk = require('chalk');
 const fs = require('fs');
-const user_path = '../get_user_set/results/user_data_set_playlists_full.json';
-const user_playlists = (() => {
-	if (fs.existsSync(user_path)) return JSON.parse(fs.readFileSync(user_path));
-	console.error(`[${chalk.red(user_path)}] User data set not found.`);
-	process.exit(1);
-})();
 const Promise = require('bluebird');
 const models = require('../models');
 const Track = models.Track;

@@ -22,7 +22,7 @@ module.exports = (data_file) => {
 		return a;
 	}, []);
 
-	const filtered = filterUnique(tracks_external_ids.filter(track => (track.external_ids.isrc)).map(track => ({
+	const externalIds = filterUnique(tracks_external_ids.filter(track => (track.external_ids.isrc)).map(track => ({
 		id: track.trackId,
 		trackId: track.trackId,
 		key: 'isrc',
@@ -31,20 +31,38 @@ module.exports = (data_file) => {
 		updatedAt: new Date(),
 	})), 'id');
 
+	const trackExternalIds = externalIds.map(track => ({
+		externalId: track.id,
+		trackId: track.id,
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	}));
+
+	let externalIdCount = externalIds.length;
+	let trackExternalIdCount = trackExternalIds.length;
+
+
 	return {
 		up: (queryInterface, Sequelize) => {
-			return ExternalId.bulkCreate(filtered, { ignoreDuplicates: true })
-				.then(() => TrackExternalId.bulkCreate(filtered.map(track => ({
-					externalId: track.id,
-					trackId: track.id,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				})), { ignoreDuplicates: true }))
+			return Promise.map(externalIds, external_id => ExternalId.bulkCreate([external_id], { ignoreDuplicates: true })
 				.catch(err => {
-					console.log(`${chalk.red('Seed failed.')}`, err.parent.detail);
+					externalIdCount = externalIdCount - 1;
+					console.error(chalk.red(`${err.parent.detail}`));
+					return Promise.resolve();
+				}), { concurrency: 4 })
+				.then(() => Promise.map(trackExternalIds, track_external_id => TrackExternalId.bulkCreate([track_external_id], { ignoreDuplicates: true })
+					.catch(err => {
+						trackExternalIdCount = trackExternalIdCount - 1;
+						console.error(chalk.red(`${err.parent.detail}`));
+						return Promise.resolve();						
+					})))
+				.catch(err => {
+					console.error(pe.render(err));
+					console.error(`${chalk.red('Seed failed.')}`);
 					return Promise.reject(err);
 				})
-				.then(console.log(`${chalk.green('Seed Success')} Track External Ids seeded: ${chalk.green(filtered.length)}`));
+				.then(console.log(`${chalk.green('Seed Success')} External ids seeded: ${chalk.green(externalIdCount)}`))
+				.then(console.log(`${chalk.green('Seed Success')} Track external id links seeded: ${chalk.green(trackExternalIdCount)}`));
 		},
 
 		down: (queryInterface, Sequelize) => {
