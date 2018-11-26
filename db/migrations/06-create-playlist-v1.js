@@ -21,6 +21,13 @@ module.exports = {
 				type: Sequelize.TEXT,
 				allowNull: false,
 			},
+			ownerId: {
+				type: Sequelize.TEXT,
+				references: {
+					model: 'Users',
+					key: 'id',
+				},
+			},
 			primary_color: {
 				type: Sequelize.TEXT,
 			},

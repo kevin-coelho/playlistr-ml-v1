@@ -9,7 +9,7 @@ const fs = require('fs');
 // MODULE DEPENDENCIES
 const {
 	get_artists_by_track_by_playlist,
-	get_audio_analysis_by_playlist,
+	get_audio_analysis_by_playlist_stream,
 	get_audio_features_by_playlist,
 	get_related_artists,
 	get_playlists,
@@ -34,7 +34,7 @@ const scripts = [
 	[get_playlists, [user_id_file, user_playlists_full]],
 	[get_artists_by_track_by_playlist, [user_playlists_full, user_playlists_artists, artists_errors]],
 	[get_related_artists, [user_playlists_artists, user_playlists_related_artists]],
-	[get_audio_analysis_by_playlist, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
+	[get_audio_analysis_by_playlist_stream, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
 	[get_audio_features_by_playlist, [user_playlists_full, user_playlists_audio_features, audio_features_errors]]
 ];
 
@@ -44,9 +44,25 @@ const main = async () => {
 	if (!fs.existsSync(path.resolve(results_dir))) {
 		fs.mkdirSync(path.resolve(results_dir));
 	}
-	console.log('Fetching entire user set. This may take some time...');
+	const args = process.argv.slice(2);
 	try {
-		await Promise.each(scripts, ([script, args]) => script(...args));
+		if (args.length > 0) {
+			const arg = args[0];
+			if (arg == 'help') {
+				console.log('[0] get_playlists');
+				console.log('[1] get_artists');
+				console.log('[2] get_related_artists');
+				console.log('[3] get_audio_analyses');
+				console.log('[4] get_audio_features');
+				process.exit(0);
+			}
+			const func = scripts[parseInt(arg)][0];
+			const func_args = scripts[parseInt(arg)][1];
+			await func(...func_args);
+		} else {
+			console.log('Fetching entire user set. This may take some time...');
+			await Promise.each(scripts, ([script, args]) => script(...args));
+		}
 	} catch (err) {
 		console.error(pe.render(err));
 		err_flag = true;

@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
 			onDelete: 'cascade',
 			hooks: 'true',
 		});
-		Playlist.hasOne(models.Owner, {
-			onDelete: 'cascade',
-			hooks: 'true',
-		});
 		Playlist.belongsToMany(models.Track, {
 			as: 'playlist',
 			through: 'playlist_track',
@@ -45,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
 			through: 'dataset_playlist',
 			onDelete: 'set null',
 			onUpdate: 'cascade',
+		});
+		Playlist.belongsTo(models.User, {
+			foreignKey: 'ownerId',
 		});
 	};
 	return Playlist;

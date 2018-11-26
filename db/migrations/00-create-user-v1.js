@@ -1,15 +1,18 @@
 'use strict';
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.createTable('Owners', {
-			href: {
-				type: Sequelize.TEXT
-			},
+		return queryInterface.createTable('Users', {
 			id: {
 				type: Sequelize.TEXT,
 				allowNull: false,
 				autoIncrement: false,
 				primaryKey: true,
+			},
+			display_name: {
+				type: Sequelize.TEXT,
+			},
+			href: {
+				type: Sequelize.TEXT
 			},
 			type: {
 				type: Sequelize.TEXT
@@ -28,6 +31,6 @@ module.exports = {
 		});
 	},
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.dropTable('Owners');
+		return queryInterface.dropTable('Users');
 	}
 };

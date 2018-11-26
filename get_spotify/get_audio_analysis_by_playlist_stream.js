@@ -68,6 +68,7 @@ const main = async (playlists_json_file, outfile, errfile) => {
 			}
 			fs.writeFileSync(JSON.stringify(failed_results));
 			console.log(`[${chalk.green(outfile)}] Wrote audio analysis to file for tracks: ${chalk.green(count)}`);
+			console.log(`Total time: ${(now('milli') - startTime).toFixed(2)} ms`);
 			return resolve();
 		});
 	});
