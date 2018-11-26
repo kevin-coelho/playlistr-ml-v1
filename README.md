@@ -27,15 +27,15 @@ If you get an error, `psql:./sql_temp.sql:2: NOTICE:  role "playlistr_ml_v1" doe
 4. If there are no errors, you are done! Use pgcli to login to the db and check your results.
 
 ## TODO HIGH PRIORITY
-- [x] Select user set playlists  
-- [x] Rewrite get audio analysis to use streams, avoid heap overload  
-- [x] Get full user set (in progress)  
 - [ ] Debug get full user set for robustness..  
-- [ ] Create User migration + seeder (for playlist owners)  
 - [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
 - [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
 - [ ] Album seeder  
 - [ ] Get album genres  
+- [x] Create User migration + seeder (for playlist owners)  
+- [x] Select user set playlists  
+- [x] Rewrite get audio analysis to use streams, avoid heap overload  
+- [x] Get full user set (in progress)  
 - [x] Get toy set with full track objects  
 - [x] Get audio features for all track objects  
 - [x] Get artist objects for all tracks  
