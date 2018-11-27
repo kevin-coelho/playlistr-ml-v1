@@ -8,6 +8,7 @@ const audio_analysis_errors = './results/audio_analysis_errors.json';
 const artists_errors = './results/artists_errors.json';
 const user_playlists_artists = './results/user_data_set_artists.json';
 const user_playlists_related_artists = './results/user_data_set_related_artists.json';
+const extended_related_artists = './results/extended_related_artists.json';
 
 module.exports = {
 	user_id_file,
@@ -20,4 +21,5 @@ module.exports = {
 	artists_errors,
 	user_playlists_related_artists,
 	results_dir,
+	extended_related_artists
 };

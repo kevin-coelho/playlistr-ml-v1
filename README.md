@@ -28,7 +28,6 @@ If you get an error, `psql:./sql_temp.sql:2: NOTICE:  role "playlistr_ml_v1" doe
 
 ## TODO HIGH PRIORITY
 - [ ] Debug get full user set for robustness..  
-- [ ] Get rid of shitty stream-json library!!!! Replace with better JSONStream  
 - [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
 - [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
 - [ ] Album seeder  
@@ -75,8 +74,10 @@ key	int	The key the track is in. Integers map to pitches using standard Pitch Cl
 - valence	float	A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).  
 
 ## TODO LOW PRIORITY
+- [ ] Get rid of shitty stream-json library!!!! Replace with better JSONStream  
 - [ ] Create playlist-track model (query by who added what track and when it was added)  
 - [ ] CSV exporter v1  
+- [ ] Create loader for extended related artists stored in json  
 
 
 ## Sequelize Model Generate Command
