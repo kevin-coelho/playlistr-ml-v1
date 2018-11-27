@@ -43,10 +43,12 @@ module.exports = (data_file) => {
 					parser({ streamValues: false }),
 					streamObject(),
 					chunk => {
-						return AudioAnalysis.upsert(Object.assign(Object.keys(chunk.value).reduce((a, key) => {
-							if (include_keys.includes(key)) a[key] = chunk.value[key];
+						const data = chunk.value.track;
+						const analysis = Object.assign(Object.keys(data).reduce((a, key) => {
+							if (include_keys.includes(key)) a[key] = data[key];
 							return a;
-						}, {}), { trackId: chunk.key, createdAt: new Date(), updatedAt: new Date() }))
+						}, {}), { trackId: chunk.key, createdAt: new Date(), updatedAt: new Date() });
+						return AudioAnalysis.bulkCreate([analysis], { ignoreDuplicates: true })
 							.then(() => {
 								count = count + 1;
 								console.log(`Loaded analysis: ${chunk.key}`);

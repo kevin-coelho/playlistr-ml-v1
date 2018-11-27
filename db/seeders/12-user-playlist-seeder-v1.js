@@ -2,6 +2,6 @@
 const user_path = '../get_user_set/results/user_data_set_playlists_full.json';
 
 // MODULE DEPS
-const { up } = require('../seeder-helpers/create-playlists')(user_path);
+const { up, down } = require('../seeder-helpers/create-playlists')(user_path);
 
-module.exports = { up, down: () => Promise.resolve(), };
+module.exports = { up, down };
