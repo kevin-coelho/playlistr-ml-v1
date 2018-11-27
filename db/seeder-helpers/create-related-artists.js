@@ -8,6 +8,8 @@ const Promise = require('bluebird');
 const Chain = require('stream-chain');
 const { parser } = require('stream-json');
 const { streamObject } = require('stream-json/streamers/StreamObject');
+const JSONStream = require('JSONStream');
+const es = require('event-stream');
 const PrettyError = require('pretty-error');
 const pe = new PrettyError();
 const models = require('../models');
@@ -21,7 +23,49 @@ module.exports = (data_file) => {
 	return {
 		up: (queryInterface, Sequelize) => {
 			return new Promise((resolve, reject) => {
-				console.log('Starting...');
+				const pipeline = fs.createReadStream(data_file)
+					.pipe(JSONStream.parse([{ emitKey: true }]))
+					.pipe(es.through(async function write({ key: primary, value: related }) {
+						this.pause();
+						const artists = related.map(artist => ({
+							id: artist.id,
+							href: artist.href,
+							name: artist.name,
+							popularity: artist.popularity,
+							type: artist.type,
+							uri: artist.uri,
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						}));
+						const relatedArtists = related.map(artist => ({
+							primaryArtist: primary,
+							secondaryArtist: artist.id,
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						}));
+						await Artist.bulkCreate(artists, { ignoreDuplicates: true })
+							.then(() => Promise.map(relatedArtists, related_artist => RelatedArtist.bulkCreate([related_artist], { ignoreDuplicates: true })
+								.catch(err => {
+									console.error(chalk.red(err.parent.detail));
+									return Promise.resolve();
+								}), { concurrency: 1 }))
+							.then(() => {
+								console.log(`Loaded chunk: ${primary}`);
+							})
+							.catch(err => {
+								this.emit('error', err);				
+							});
+						this.emit('data', true);
+						this.resume();
+					}, function end() { this.emit('end'); }));
+				pipeline.on('error', err => console.error(pe.render(err)));
+				pipeline.on('end', () => {
+					console.log(`${chalk.green('JSON Stream complete.')}`);
+					resolve();
+				});
+			});
+
+			/*
 				const pipeline = new Chain([
 					fs.createReadStream(data_file),
 					parser({ streamValues: false }),
@@ -54,7 +98,7 @@ module.exports = (data_file) => {
 				]);
 				pipeline.on('error', err => console.log(pe.render(err)));
 				pipeline.on('finish', () => resolve(console.log(`${chalk.green('JSON Stream complete.')}`)));
-			});
+			});*/
 		},
 		down: (queryInterface, Sequelize) => {
 			/*

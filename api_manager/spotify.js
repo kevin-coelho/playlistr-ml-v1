@@ -10,6 +10,9 @@ const chalk = require('chalk');
 const qs = require('query-string');
 const path = require('path');
 
+// MODULE DEPS
+const { sleep } = require('../utils');
+
 // CONSTANTS
 const TIMEOUT = 8000;
 const { token_dir } = require('./constants');
@@ -113,6 +116,16 @@ const res_err_interceptor = async (err) => {
 		console.error(err.response.data);
 		console.error(err.response.status);
 		console.error(err.response.headers);
+		if (err.response.status == 429 && err.response.headers['retry-after']) {
+			console.log(`API Rate limiter. ${chalk.yellow('Retrying...')}`);
+			return sleep(err.response.headers['retry-after'] * 1000 + 100)
+				.then(() => api_instance.request(err.config));
+		}
+		if (err.response.status === 408 || err.code === 'ECONNABORTED') {
+			console.log(`Timeout. ${chalk.yellow('Retrying...')}`);
+			return sleep(500)
+				.then(() => api_instance.request(err.config));
+		}
 	}
 	return Promise.reject(err);
 };
