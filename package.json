@@ -20,7 +20,7 @@
     "chalk": "^2.4.1",
     "child-process": "^1.0.2",
     "dotenv": "^6.0.0",
-    "event-stream": "^4.0.1",
+    "event-stream": "3.3.4",
     "fs": "^0.0.1-security",
     "fs-backwards-stream": "^1.0.0",
     "moment": "^2.22.2",
