@@ -26,7 +26,7 @@ module.exports = (data_file) => {
 				const pipeline = fs.createReadStream(data_file)
 					.pipe(JSONStream.parse([{ emitKey: true }]))
 					.pipe(es.through(async function write({ key: primary, value: related }) {
-						this.pause();
+						if(!this.paused) this.pause();
 						const artists = related.map(artist => ({
 							id: artist.id,
 							href: artist.href,
@@ -56,7 +56,7 @@ module.exports = (data_file) => {
 								this.emit('error', err);				
 							});
 						this.emit('data', true);
-						this.resume();
+						if(this.paused) this.resume();
 					}, function end() { this.emit('end'); }));
 				pipeline.on('error', err => console.error(pe.render(err)));
 				pipeline.on('end', () => {

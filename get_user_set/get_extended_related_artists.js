@@ -31,15 +31,6 @@ if (!fs.existsSync(extended_related_artists)) {
 }
 const stats = fs.statSync(extended_related_artists);
 let start = stats.size - 1;
-/*
-const fd = fs.openSync(extended_related_artists, 'r');
-const buf = Buffer.alloc(10);
-fs.readSync(fd, buf, 0, 2, start);
-const lastChars = buf.toString();
-console.log('lastchar: ', lastChars);
-if (lastChars == ']]') {
-	start = start - 1;
-}*/
 const out = fs.createWriteStream(extended_related_artists, {
 	start,
 	flags: 'r+',
