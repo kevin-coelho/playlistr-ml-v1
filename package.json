@@ -5,14 +5,22 @@
   "repository": "https://github.com/kevin-coelho/playlistr-ml-v1.git",
   "author": "Kevin <kevin@kevincoelho.com>",
   "license": "MIT",
+  "scripts": {
+    "get-toy-set": "cd get_toy_set && node index",
+    "setup-db": "cd db && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && echo 'Completed db setup!'",
+    "init-db": "cd db/config && node setup"
+  },
   "dependencies": {
+    "JSONStream": "^1.3.5",
     "axios": "^0.18.0",
     "axios-retry": "^3.1.1",
     "bluebird": "^3.5.2",
     "btoa": "^1.2.1",
+    "chai": "^4.2.0",
     "chalk": "^2.4.1",
     "dotenv": "^6.1.0",
     "fs": "^0.0.1-security",
+    "fs-backwards-stream": "^1.0.0",
     "moment": "^2.22.2",
     "path": "^0.12.7",
     "pg": "^7.5.0",
@@ -23,6 +31,7 @@
     "sequelize-cli": "^5.2.0",
     "stream-chain": "^2.0.3",
     "stream-json": "^1.1.3",
+    "through2": "^3.0.0",
     "winston": "^3.1.0"
   },
   "devDependencies": {

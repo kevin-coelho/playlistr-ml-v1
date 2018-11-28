@@ -1,27 +1,50 @@
 # playlistr-ml-v1
 
+## Dependencies
+1. Install homebrew. [Installation Instructions](https://brew.sh/)
+2. Install pgcli. Run this command: `brew install pgcli`
+3. Install postgres `brew install postgres`
+4. Install node `brew install node`
+5. Check that node and npm are properly installed `node -v`, `npm -v`
+6. Install yarn `npm install -g yarn`
+7. cd into this directory `cd playlistr-ml-v1`
+8. Install required packages `yarn install`
+
+## Setup the DB
+1. Start your postgres db (make sure it is installed first, see [dependencies](#dependencies) above)
+2. Start postgres `brew services start postgres`
+3. Check that postgres is running `pgcli -U $(whoami) postgres`
+4. Exit pgcli with `ctrl+D`
+
+
 ## Seeding DB with Toy Data
 This will first pull all toy data from Spotify API, then use Sequelize migrations + seeders to load the db with it.
 
-1. `cd get_toy_set`
-2. `node index.js`
-3. `cd db`
-4. `../node_modules/.bin/sequelize db:migrate`
-5. `../node_modules/.bin/sequelize db:seed:all`
+1. Inside `/playlistr-ml-v1`, run this command: `yarn run get-toy-set`
+2. Inside `/playlistr-ml-v1`, run this command: `yarn run init-db`
+3. Inside `/playlistr-ml-v1`, run this command: `yarn run setup-db`  
+If you get an error, `psql:./sql_temp.sql:2: NOTICE:  role "playlistr_ml_v1" does not exist, skipping`, ignore it.  
+4. If there are no errors, you are done! Use pgcli to login to the db and check your results.
 
 ## TODO HIGH PRIORITY
+- [ ] Debug get full user set for robustness..  
+- [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
+- [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
+- [ ] Album seeder  
+- [ ] Get album genres  
+- [x] Create User migration + seeder (for playlist owners)  
+- [x] Select user set playlists  
+- [x] Rewrite get audio analysis to use streams, avoid heap overload  
+- [x] Get full user set (in progress)  
 - [x] Get toy set with full track objects  
 - [x] Get audio features for all track objects  
 - [x] Get artist objects for all tracks  
 - [x] Get audio analysis for all tracks  
 - [x] Track playlist association  
-- [ ] CSV exporter v1  
 - [x] Migration + seeder for artists in db  
 - [x] Artist track association  
 - [x] Get related artists for all artists  
 - [x] Get artist genres  
-- [ ] Album seeder  
-- [ ] Get album genres  
 
 ## Features
 ### Audio Analysis
@@ -51,9 +74,10 @@ key	int	The key the track is in. Integers map to pitches using standard Pitch Cl
 - valence	float	A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).  
 
 ## TODO LOW PRIORITY
-- [ ] Scrape musicbrainz "Release" objects for all tracks (and get MBID for tracks by ISRC)  
-- [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
+- [ ] Get rid of shitty stream-json library!!!! Replace with better JSONStream  
 - [ ] Create playlist-track model (query by who added what track and when it was added)  
+- [ ] CSV exporter v1  
+- [ ] Create loader for extended related artists stored in json  
 
 
 ## Sequelize Model Generate Command

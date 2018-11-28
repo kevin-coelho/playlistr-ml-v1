@@ -1,42 +1,43 @@
 // DEPENDENCIES
 const chalk = require('chalk');
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs'));
 const PrettyError = require('pretty-error');
 const pe = new PrettyError();
+const path = require('path');
+const Promise = require('bluebird');
+const fs = require('fs');
+
+// MODULE DEPENDENCIES
+const {
+	get_audio_analysis_by_playlist_stream,
+} = require('../get_spotify');
 
 // CONSTANTS
-const { toy_playlists_full, toy_playlists_audio_analysis } = require('./constants');
-const { getTrackAudioAnalysisConfig } = require('./util');
+const {
+	toy_playlists_full,
+	toy_playlists_audio_analysis,
+	audio_analysis_errors,
+	results_dir,
+} = require('./constants');
 
-// MAIN FUNCTION
+// SCRIPTS TO RUN
+const scripts = [
+	[get_audio_analysis_by_playlist_stream, [toy_playlists_full, toy_playlists_audio_analysis, audio_analysis_errors]],
+];
+
+// run in order
 const main = async () => {
+	let err_flag = false;
+	if (!fs.existsSync(path.resolve(results_dir))) {
+		fs.mkdirSync(path.resolve(results_dir));
+	}
+	console.log('Fetching entire toy set. This may take some time...');
 	try {
-		const toy_set = JSON.parse(await fs.readFileAsync(toy_playlists_full));
-		const api_instance = await require('../api_manager');
-		const track_ids = toy_set.reduce((track_arr, current_playlist) => {
-			track_arr.push(...current_playlist.tracks.map(playlist_track => playlist_track.track.id));
-			return track_arr;
-		}, []);
-		return Promise.map(track_ids, id => Promise.all([id, api_instance.request(getTrackAudioAnalysisConfig(id))]), {
-			concurrency: 4,
-		})
-			.then(results => results.reduce((result_obj, result) => {
-				delete result[1].track.codestring;
-				delete result[1].track.echoprintstring;
-				delete result[1].track.synchstring;
-				delete result[1].track.rhythmstring;
-				result_obj[result[0]] = { track: result[1].track };
-				return result_obj;
-			}, {}))
-			.then(results => {
-				return fs.writeFileAsync(toy_playlists_audio_analysis, JSON.stringify(results))
-					.then(() => console.log(`[${chalk.green(toy_playlists_audio_analysis)}] Wrote audio analysis to file for tracks: ${chalk.green(Object.keys(results).length)}`));
-			})
-			.catch(err => console.error(pe.render(err)));
+		await Promise.each(scripts, ([script, args]) => script(...args));
 	} catch (err) {
 		console.error(pe.render(err));
+		err_flag = true;
 	}
+	console.log(err_flag ? chalk.red('Completed with errors.') : `[${chalk.green(path.resolve(results_dir))}] Toy set JSON fetch complete.`);
 };
 
 if (require.main === module) {

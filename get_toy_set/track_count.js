@@ -14,6 +14,7 @@ const main = async () => {
 	let totals = toy_set.map(playlist => playlist.tracks.length);
 	totals.sort((a, b) => (b - a));
 	console.log(totals);
+	console.log('Grand total: ', totals.reduce((a, c) => a + c, 0));
 };
 
 if (require.main === module) {

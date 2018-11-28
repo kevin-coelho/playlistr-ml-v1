@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
 			as: 'playlist_tracks',
 			through: 'playlist_track',
 		});
+		Track.belongsToMany(models.DataSet, {
+			as: 'dataset_tracks',
+			through: 'dataset_track',
+		});
 		Track.belongsToMany(models.AvailableMarket, {
 			as: 'market_tracks',
 			through: 'track_market',
