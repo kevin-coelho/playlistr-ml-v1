@@ -32,6 +32,7 @@ If you get an error, `psql:./sql_temp.sql:2: NOTICE:  role "playlistr_ml_v1" doe
 - [ ] Scrape acousticbrainz high-level data for all tracks ` GET https://acousticbrainz.org/api/v1/96685213-a25c-4678-9a13-abd9ec81cf35/high-level`  
 - [ ] Album seeder  
 - [ ] Get album genres  
+- [x] Create script to split datasets into trian / test  
 - [x] Create User migration + seeder (for playlist owners)  
 - [x] Select user set playlists  
 - [x] Rewrite get audio analysis to use streams, avoid heap overload  
@@ -76,7 +77,7 @@ key	int	The key the track is in. Integers map to pitches using standard Pitch Cl
 ## TODO LOW PRIORITY
 - [ ] Get rid of shitty stream-json library!!!! Replace with better JSONStream  
 - [ ] Create playlist-track model (query by who added what track and when it was added)  
-- [ ] CSV exporter v1  
+- [x] CSV exporter v1 - use postgres 'copy'...  
 - [ ] Create loader for extended related artists stored in json  
 
 

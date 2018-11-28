@@ -29,6 +29,8 @@ const {
 	results_dir,
 } = require('./constants');
 
+const split_dataset = require('../db/seeder-helpers/split-dataset')(80, 'spotify_toy_data_set');
+
 // SCRIPTS TO RUN
 const scripts = [
 	[get_playlists, [toy_id_file, toy_playlists_full]],
@@ -54,11 +56,15 @@ const main = async () => {
 				console.log('[2] get_related_artists');
 				console.log('[3] get_audio_analyses');
 				console.log('[4] get_audio_features');
+				console.log('[5] split_dataset');
 				process.exit(0);
-			}
-			const func = scripts[parseInt(arg)][0];
-			const func_args = scripts[parseInt(arg)][1];
-			await func(...func_args);
+			} else if (arg == 5) {
+				await split_dataset.up();
+			} else {
+				const func = scripts[parseInt(arg)][0];
+				const func_args = scripts[parseInt(arg)][1];
+				await func(...func_args);
+			}			
 		} else {
 			console.log('Fetching entire toy set. This may take some time...');
 			await Promise.each(scripts, ([script, args]) => script(...args));
@@ -68,6 +74,7 @@ const main = async () => {
 		err_flag = true;
 	}
 	console.log(err_flag ? chalk.red('Completed with errors.') : `[${chalk.green(path.resolve(results_dir))}] Toy set JSON fetch complete.`);
+	process.exit(0);
 };
 
 if (require.main === module) {
