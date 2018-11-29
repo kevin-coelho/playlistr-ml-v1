@@ -26,16 +26,15 @@ function getPlaylistConfig(id) {
 /**
  * Get an array of track objects from Spotify's API.
  * 
- * @param  {String} 						ids 	Array of track ids to retrieve. Must be passed as
- * 													comma-separated string.
- * @return {[Array of Track Object]} 				Retrieved array of track objects
+ * @param  {[Array of String]} 						ids 	Array of track ids to retrieve. 
+ * @return {[Array of Track Object]} 						Retrieved array of track objects
  */
 function getTrackConfig(ids) {
 	return {
 		url: '/tracks',
 		method: 'get',
 		params: {
-			ids
+			ids: ids.join(','),
 		},
 	};
 }

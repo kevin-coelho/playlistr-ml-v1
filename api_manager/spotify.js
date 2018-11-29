@@ -14,7 +14,10 @@ const path = require('path');
 const { sleep } = require('../utils');
 
 // CONSTANTS
-const TIMEOUT = 8000;
+const TIMEOUT = 8000; // ms
+const RETRY_SLEEP = 500; // ms
+const EXPIRATION_PADDING = 60; // seconds
+const RETRY_LIMIT = 3;
 const { token_dir } = require('./constants');
 const token_file = path.join(token_dir, 'spotify_token.json');
 const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
@@ -33,6 +36,8 @@ axiosRetry(api_instance, {
 	shouldResetTimeout: true,
 });
 
+let retries = 0;
+
 // get access token
 const getToken = async () => {
 	try {
@@ -43,7 +48,7 @@ const getToken = async () => {
 				console.log(chalk.yellow('Got token object: '), JSON.stringify(token_obj));
 				// token expired, get new one
 				if (moment(token_obj.expiration).isBefore(moment())) return tokenRequest();
-				else return Promise.resolve(token_obj);
+				return Promise.resolve(token_obj);
 			});
 	} catch (err) {
 		console.error(pe.render(err));
@@ -54,10 +59,12 @@ const getToken = async () => {
 // send request to spotify to get a new access token and write to file
 function tokenRequest() {
 	console.log('Sending token request...');
-	return api_instance.request(tokenRequestConfig())
+	const config = tokenRequestConfig();
+	console.log('Token request config: ', config);
+	return axios.request(config)
 		.then(res => res.data)
 		.then(token_obj => {
-			token_obj.expiration = moment().add(token_obj.expires_in, 'seconds');
+			token_obj.expiration = moment().add(token_obj.expires_in - EXPIRATION_PADDING, 'seconds');
 			console.log(chalk.yellow('Got token object: '), JSON.stringify(token_obj));
 			return fs.writeFileAsync(token_file, JSON.stringify(token_obj))
 				.then(() => token_obj);
@@ -92,22 +99,36 @@ function tokenRequestConfig() {
 }
 
 // interceptor to add token to the beginning of all requests
-const req_interceptor = async (request) => {
+const req_interceptor = (request) => {
 	if (api_instance.token_obj) {
 		const token_obj = api_instance.token_obj;
-		api_instance.token_obj = await moment(token_obj.expiration).isBefore(moment()) ? tokenRequest() : token_obj;
+		if (moment(token_obj.expiration).isBefore(moment())) {
+			return tokenRequest()
+				.then(token_obj => {
+					api_instance.token_obj = token_obj;
+					request.headers.Authorization = `Bearer ${api_instance.token_obj.access_token}`;
+					return api_instance.request(request);
+				});
+		}
 		request.headers.Authorization = `Bearer ${api_instance.token_obj.access_token}`;
 	}
 	console.log(`${request.method.toUpperCase()}`, chalk.yellow(request.url || request.baseURL));
 	return request;
 };
 
-const res_interceptor = async (response) => {
+const res_interceptor = (response) => {
 	return Promise.resolve(response.data);
 };
 
+const retryTokenAuth = () => {
+	return tokenRequest()
+		.then(token_obj => {
+			api_instance.token_obj = token_obj;
+		});	
+};
+
 // interceptor to print response errors
-const res_err_interceptor = async (err) => {
+const res_err_interceptor = (err) => {
 	console.error(chalk.red(`[${err.config.url}] Error response received`));
 	console.error(pe.render(err));
 	if (err.response) {
@@ -117,13 +138,24 @@ const res_err_interceptor = async (err) => {
 		console.error(err.response.status);
 		console.error(err.response.headers);
 		if (err.response.status == 429 && err.response.headers['retry-after']) {
-			console.log(`API Rate limiter. ${chalk.yellow('Retrying...')}`);
-			return sleep(err.response.headers['retry-after'] * 1000 + 100)
-				.then(() => api_instance.request(err.config));
+			if (retries < RETRY_LIMIT) {
+				console.log(`API Rate limiter. ${chalk.yellow('Retrying...')}`);
+				retries = retries + 1;
+				return sleep(err.response.headers['retry-after'] * 1000 + RETRY_SLEEP)
+					.then(() => api_instance.request(err.config));
+			}
 		}
 		if (err.response.status === 408 || err.code === 'ECONNABORTED') {
 			console.log(`Timeout. ${chalk.yellow('Retrying...')}`);
-			return sleep(500)
+			return sleep(RETRY_SLEEP)
+				.then(() => api_instance.request(err.config));
+		}		
+		if (err.response.status == 401 
+			&& (err.response.data.error.message == 'Invalid access token'
+			|| err.response.data.error.message == 'The access token expired')) {
+			console.log(chalk.yellow('Invalid access token. Retrying...'));
+			return retryTokenAuth()
+				.then(() => sleep(RETRY_SLEEP))
 				.then(() => api_instance.request(err.config));
 		}
 	}
