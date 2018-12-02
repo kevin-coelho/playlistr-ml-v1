@@ -143,19 +143,16 @@ const main = async () => {
 							return Promise.resolve();
 						}
 					}), { concurrency: 1, }))
-				.then(() => console.log(`Loaded new artists: [${chalk.green(artistCount)}]. Loaded "related artist" rows: [${chalk.green(relatedCount)}]`))
 				.then(() => {
 					const write_res = out.write(']');
 					if (!write_res) {
 						return new Promise((resolve, reject) => {
-							out.once('drain', () => {
-								out.write(']');
-								resolve();
-							});
+							out.once('drain', () => resolve());
 						});
 					}
 					return Promise.resolve();
 				})
+				.then(() => console.log(`Loaded new artists: [${chalk.green(artistCount)}]. Loaded "related artist" rows: [${chalk.green(relatedCount)}]`))
 				.then(() => {
 					resolve();
 				});

@@ -77,6 +77,8 @@ function tokenRequest() {
 				console.error(err.response.data);
 				console.error(err.response.status);
 				console.error(err.response.headers);
+			} else {
+				console.error(chalk.red('Network error occurred. Check the connection.'));
 			}
 			return Promise.reject('Token request failed');
 		});
@@ -158,6 +160,8 @@ const res_err_interceptor = (err) => {
 				.then(() => sleep(RETRY_SLEEP))
 				.then(() => api_instance.request(err.config));
 		}
+	} else {
+		console.error(chalk.red('Network error occurred. Check the connection.'));
 	}
 	return Promise.reject(err);
 };

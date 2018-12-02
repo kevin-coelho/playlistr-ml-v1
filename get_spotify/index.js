@@ -4,4 +4,5 @@ module.exports = {
 	get_audio_features_by_playlist: require('./get_audio_features_by_playlist'),
 	get_related_artists: require('./get_related_artists'),
 	get_playlists: require('./get_playlists'),
+	recover_audio_analysis_errors: require('./recover_audio_analysis_errors'),
 };

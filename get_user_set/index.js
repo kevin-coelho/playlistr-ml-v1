@@ -13,6 +13,7 @@ const {
 	get_audio_features_by_playlist,
 	get_related_artists,
 	get_playlists,
+	recover_audio_analysis_errors,
 } = require('../get_spotify');
 
 // CONSTANTS
@@ -38,6 +39,13 @@ const scripts = [
 	[get_audio_features_by_playlist, [user_playlists_full, user_playlists_audio_features, audio_features_errors]]
 ];
 
+const recovery_scripts = [
+	null, // todo
+	null, // todo
+	null, // todo
+	[recover_audio_analysis_errors, [audio_analysis_errors, user_playlists_audio_analysis, audio_analysis_errors]],
+	null, // todo
+];
 // run in order
 const main = async () => {	
 	let err_flag = false;
@@ -48,16 +56,24 @@ const main = async () => {
 	try {
 		if (args.length > 0) {
 			const arg = args[0];
-			if (arg == 'help') {
+			let func;
+			let func_args;
+			if (arg == 'help' || (arg == 'recovery' && args.length < 2)) {
 				console.log('[0] get_playlists');
 				console.log('[1] get_artists');
 				console.log('[2] get_related_artists');
 				console.log('[3] get_audio_analyses');
 				console.log('[4] get_audio_features');
 				process.exit(0);
+			} else if (arg == 'recovery' && args.length > 1) {
+				const idx = parseInt(args[1]);
+				func = recovery_scripts[idx][0];
+				func_args = recovery_scripts[idx][1];
+			} else {
+				const idx = parseInt(arg);
+				func = scripts[idx][0];
+				func_args = scripts[idx][1];
 			}
-			const func = scripts[parseInt(arg)][0];
-			const func_args = scripts[parseInt(arg)][1];
 			await func(...func_args);
 		} else {
 			console.log('Fetching entire user set. This may take some time...');

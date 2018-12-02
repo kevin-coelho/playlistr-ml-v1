@@ -53,7 +53,7 @@ const main = async (playlists_json_file, outfile, errfile) => {
 			obj => {
 				let result = '';
 				Object.keys(obj).forEach(trackId => {
-					result = result + `${sep}"${trackId}": ${JSON.stringify(obj[trackId])}`;
+					result = result + `${sep}\n${JSON.stringify(trackId)}: ${JSON.stringify(obj[trackId])}`;
 					if (!sep) sep = ',';
 					count = count + 1;
 					console.log(`Wrote analysis: ${chalk.yellow(trackId)}`);
