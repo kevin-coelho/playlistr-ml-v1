@@ -16,6 +16,8 @@ const {
 	recover_audio_analysis_errors,
 } = require('../get_spotify');
 
+const get_extended_related_artists = require('../db/seeder-helpers/get_extended_related_artists');
+
 // CONSTANTS
 const {
 	user_id_file,
@@ -28,6 +30,7 @@ const {
 	artists_errors,
 	user_playlists_related_artists,
 	results_dir,
+	extended_related_artists,
 } = require('./constants');
 
 // SCRIPTS TO RUN
@@ -36,7 +39,8 @@ const scripts = [
 	[get_artists_by_track_by_playlist, [user_playlists_full, user_playlists_artists, artists_errors]],
 	[get_related_artists, [user_playlists_artists, user_playlists_related_artists]],
 	[get_audio_analysis_by_playlist_stream, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
-	[get_audio_features_by_playlist, [user_playlists_full, user_playlists_audio_features, audio_features_errors]]
+	[get_audio_features_by_playlist, [user_playlists_full, user_playlists_audio_features, audio_features_errors]],
+	[get_extended_related_artists, ['spotify_user_data_set', 2, extended_related_artists]],
 ];
 
 const recovery_scripts = [
@@ -44,6 +48,7 @@ const recovery_scripts = [
 	null, // todo
 	null, // todo
 	[recover_audio_analysis_errors, [audio_analysis_errors, user_playlists_audio_analysis, audio_analysis_errors]],
+	null, // todo
 	null, // todo
 ];
 // run in order
@@ -64,6 +69,7 @@ const main = async () => {
 				console.log('[2] get_related_artists');
 				console.log('[3] get_audio_analyses');
 				console.log('[4] get_audio_features');
+				console.log('[5] get_extended_related_artists');
 				process.exit(0);
 			} else if (arg == 'recovery' && args.length > 1) {
 				const idx = parseInt(args[1]);
