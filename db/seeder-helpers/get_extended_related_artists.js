@@ -88,14 +88,20 @@ const main = async (dataset_name, related_degrees, outfile) => {
 				})
 				.then(artist_ids => Promise.map(artist_ids, id => Promise.all([
 					id,
-					sleep(50).then(() => api_instance.request(getRelatedArtistConfig(id))).catch(err => {
-						failed_results.push(id);
-						console.error(pe.render(err));
-						return Promise.resolve(false);
-					}).then(result => result.artists),
+					sleep(50).then(() => api_instance.request(getRelatedArtistConfig(id)))
+						.then(result => result.artists)
+						.catch(err => {
+							failed_results.push(id);
+							console.error(pe.render(err));
+							return Promise.resolve(false);
+						}),
 				])
 					.then(result => {
-						if (result[1]) {
+						if (result[1] && result[1].length < 1) {
+							console.log(`[${chalk.yellow(result[0])}] No related artists found.`);
+							failed_results.push(result[0]);
+							return Promise.resolve();
+						} else if (result[1]) {
 							const primaryArtist = result[0];
 							const artists = result[1].map(artist => ({
 								id: artist.id,
@@ -159,16 +165,15 @@ const main = async (dataset_name, related_degrees, outfile) => {
 									console.log(msg);
 								});
 
-							result[1].forEach(artist => {
+							return db_promise.then(() => Promise.each(result[1], artist => {
 								const write_res = out.write(`${sep}\n[${JSON.stringify(primaryArtist)}, ${JSON.stringify(artist)}]`);
 								if (!sep) sep = ',';
 								if (!write_res) {
 									return new Promise((resolve, reject) => {
 										out.once('drain', resolve);
-									}).then(() => db_promise);
+									});
 								}
-								return db_promise;
-							});
+							}));
 						} else {
 							failed_results.push(result[0]);
 							return Promise.resolve();
