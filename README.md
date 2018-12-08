@@ -85,5 +85,3 @@ key	int	The key the track is in. Integers map to pitches using standard Pitch Cl
 ## Sequelize Model Generate Command
 Example:
 `$ node_modules/.bin/sequelize model:generate --name User --attributes firstName:string,lastName:string,email:string`
-
-git test..
