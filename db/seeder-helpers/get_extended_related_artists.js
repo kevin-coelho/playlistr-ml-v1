@@ -65,130 +65,133 @@ const main = async (dataset_name, related_degrees, outfile) => {
 	}
 	let sep = '';
 
+	console.log('Starting...');
+	const get_api_instance = require('../../api_manager').spotify;
+	const failed_results = [];
+	let artistCount = 0;
+	let relatedCount = 0;
+	let iter_count = 0;
+	let startTime;
+	let total;
 
-	return new Promise((resolve, reject) => {
-		console.log('Starting...');
-		const get_api_instance = require('../../api_manager').spotify;
-		const failed_results = [];
-		let artistCount = 0;
-		let relatedCount = 0;
-		let iter_count = 0;
-		let startTime;
-		let total;
-
-		return get_api_instance().then(api_instance => {
-			const query = generate_related_query('spotify_user_data_set', related_degrees);
-			console.log('Executing query...\n', chalk.yellow(query));
-			return sequelize.query(query, { type: Sequelize.QueryTypes.SELECT })
-				.then(results => {
-					console.log(`Fetching related artists for artists ${chalk.yellow(results.length)}`);
-					total = results.length;
-					startTime = now('milli');
-					return results.map(result => result.secondaryArtist);
-				})
-				.then(artist_ids => Promise.map(artist_ids, id => Promise.all([
-					id,
-					sleep(50).then(() => api_instance.request(getRelatedArtistConfig(id))).catch(err => {
-						failed_results.push(id);
-						console.error(pe.render(err));
-						return Promise.resolve(false);
-					}).then(result => result.artists),
-				])
-					.then(result => {
-						if (result[1]) {
-							const primaryArtist = result[0];
-							const artists = result[1].map(artist => ({
-								id: artist.id,
-								href: artist.href,
-								name: artist.name,
-								popularity: artist.popularity,
-								type: artist.type,
-								uri: artist.uri,
-								createdAt: new Date(),
-								updatedAt: new Date(),
-							}));
-							const relatedArtists = result[1].map(artist => ({
-								primaryArtist,
-								secondaryArtist: artist.id,
-								createdAt: new Date(),
-								updatedAt: new Date(),
-							}));
-							const genres = result[1].map(artist => artist.genres).reduce((a, genre_arr) => {
-								a.push(...genre_arr);
-								return a;
-							}, []).map(genre => ({
-								name: genre,
-								createdAt: new Date(),
-								updatedAt: new Date()
-							}));
-							const artist_genres = result[1].reduce((a, artist) => {
-								a.push(...artist.genres.reduce((a, genre) => {
-									a.push({
-										artistId: artist.id,
-										genre,
-										createdAt: new Date(),
-										updatedAt: new Date(),
-									});
-									return a;
-								}, []));
-								return a;
-							}, []);
-							const db_promise = Artist.bulkCreate(artists, { ignoreDuplicates: true })
-								.then(() => RelatedArtist.bulkCreate(relatedArtists, { ignoreDuplicates: true }))
-								.then(() => Genre.bulkCreate(genres, { ignoreDuplicates: true }))
-								.catch(err => console.error(err.parent.error))
-								.then(() => Promise.map(artist_genres, artist_genre => ArtistGenre.bulkCreate([artist_genre], { ignoreDuplicates: true })
-									.catch(err => {
-										console.error(chalk.red(`${err.parent.detail}`));
-										return Promise.resolve();
-									}), { concurrency: 4 }))
-								.catch(err => {
-									console.error(pe.render(err));
-									failed_results.push(primaryArtist);
-								})
-								.then(() => {
-									artistCount = artistCount + artists.length;
-									relatedCount = relatedCount + relatedArtists.length;
-									iter_count = iter_count + 1;
-									let msg = `Loaded chunk ${primaryArtist}`;
-									if (iter_count % 50 == 0) {
-										const avg_time = (now('milli') - startTime) / iter_count;
-										const est_complete = (total - iter_count) * avg_time;
-										msg += ` | Avg time: ${avg_time.toFixed(2)} ms | Est. complete: ${est_complete.toFixed(2)} ms`;
-									}
-									console.log(msg);
+	return get_api_instance().then(api_instance => {
+		const query = generate_related_query('spotify_user_data_set', related_degrees);
+		console.log('Executing query...\n', chalk.yellow(query));
+		return sequelize.query(query, { type: Sequelize.QueryTypes.SELECT })
+			.then(results => {
+				console.log(`Fetching related artists for artists ${chalk.yellow(results.length)}`);
+				total = results.length;
+				startTime = now('milli');
+				return results.map(result => result.secondaryArtist);
+			})
+			.then(artist_ids => Promise.map(artist_ids, id => Promise.all([
+				id,
+				sleep(50).then(() => api_instance.request(getRelatedArtistConfig(id))).catch(err => {
+					failed_results.push(id);
+					console.error(pe.render(err));
+					return Promise.resolve(false);
+				}).then(result => result.artists),
+			])
+				.then(result => {
+					if (result[1] && result[1].length < 1) {
+						console.log(`[${chalk.yellow(result[0])}] No related artists found.`);
+						failed_results.push(result[0]);
+						return Promise.resolve();
+					} else if (result[1]) {
+						const primaryArtist = result[0];
+						const artists = result[1].map(artist => ({
+							id: artist.id,
+							href: artist.href,
+							name: artist.name,
+							popularity: artist.popularity,
+							type: artist.type,
+							uri: artist.uri,
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						}));
+						const relatedArtists = result[1].map(artist => ({
+							primaryArtist,
+							secondaryArtist: artist.id,
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						}));
+						const genres = result[1].map(artist => artist.genres).reduce((a, genre_arr) => {
+							a.push(...genre_arr);
+							return a;
+						}, []).map(genre => ({
+							name: genre,
+							createdAt: new Date(),
+							updatedAt: new Date()
+						}));
+						const artist_genres = result[1].reduce((a, artist) => {
+							a.push(...artist.genres.reduce((a, genre) => {
+								a.push({
+									artistId: artist.id,
+									genre,
+									createdAt: new Date(),
+									updatedAt: new Date(),
 								});
-
-							result[1].forEach(artist => {
-								const write_res = out.write(`${sep}\n[${JSON.stringify(primaryArtist)}, ${JSON.stringify(artist)}]`);
-								if (!sep) sep = ',';
-								if (!write_res) {
-									return new Promise((resolve, reject) => {
-										out.once('drain', resolve);
-									}).then(() => db_promise);
+								return a;
+							}, []));
+							return a;
+						}, []);
+						const db_promise = Artist.bulkCreate(artists, { ignoreDuplicates: true })
+							.then(() => Promise.map(relatedArtists, artist_relation => RelatedArtist.bulkCreate([artist_relation], { ignoreDuplicates: true })
+								.catch(err => console.error(err.parent.error)), { concurrency: 4 }))
+							.then(() => Genre.bulkCreate(genres, { ignoreDuplicates: true }))
+							.catch(err => {
+								console.error(err.parent.error);
+								return Promise.reject(err);
+							})
+							.then(() => Promise.map(artist_genres, artist_genre => ArtistGenre.bulkCreate([artist_genre], { ignoreDuplicates: true })
+								.catch(err => {
+									console.error(chalk.red(`${err.parent.detail}`));
+									return Promise.resolve();
+								}), { concurrency: 4 }))
+							.catch(err => {
+								console.error(pe.render(err));
+								failed_results.push(primaryArtist);
+							})
+							.then(() => {
+								artistCount = artistCount + artists.length;
+								relatedCount = relatedCount + relatedArtists.length;
+								iter_count = iter_count + 1;
+								let msg = `Loaded chunk ${primaryArtist}`;
+								if (iter_count % 50 == 0) {
+									const avg_time = (now('milli') - startTime) / iter_count;
+									const est_complete = (total - iter_count) * avg_time;
+									msg += ` | Avg time: ${avg_time.toFixed(2)} ms | Est. complete: ${est_complete.toFixed(2)} ms`;
 								}
-								return db_promise;
+								console.log(msg);
 							});
-						} else {
-							failed_results.push(result[0]);
+
+						return db_promise.then(() => Promise.each(result[1], artist => {
+							const write_res = out.write(`${sep}\n[${JSON.stringify(primaryArtist)}, ${JSON.stringify(artist)}]`);
+							if (!sep) sep = ',';
+							if (!write_res) {
+								console.log(chalk.yellow('Bad write, waiting for drain...'));
+								return new Promise((resolve, reject) => {
+									out.once('drain', () => resolve());
+								});
+							}
 							return Promise.resolve();
-						}
-					}), { concurrency: 1, }))
-				.then(() => {
-					const write_res = out.write(']');
-					if (!write_res) {
-						return new Promise((resolve, reject) => {
-							out.once('drain', () => resolve());
-						});
+						}));
+					} else {
+						failed_results.push(result[0]);
+						return Promise.resolve();
 					}
-					return Promise.resolve();
-				})
-				.then(() => console.log(`Loaded new artists: [${chalk.green(artistCount)}]. Loaded "related artist" rows: [${chalk.green(relatedCount)}]`))
-				.then(() => failed_results.length > 0 ? console.log(`Failed to load artists: [${chalk.red(failed_results.length)}]. Re-run script.`) : true)
-				.then(() => {
-					resolve();
-				});
-		}).catch(err => reject(err));
+				}), { concurrency: 1, }))
+			.then(() => {
+				const write_res = out.write(']');
+				if (!write_res) {
+					return new Promise((resolve, reject) => {
+						out.once('drain', () => resolve());
+					});
+				}
+				return Promise.resolve();
+			})
+			.then(() => console.log(`Loaded new artists: [${chalk.green(artistCount)}]. Loaded "related artist" rows: [${chalk.green(relatedCount)}]`))
+			.then(() => failed_results.length > 0 ? console.log(`Failed to load artists: [${chalk.red(failed_results.length)}]. Re-run script.`) : true);
 	});
 };
 

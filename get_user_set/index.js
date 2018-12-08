@@ -40,7 +40,7 @@ const scripts = [
 	[get_related_artists, [user_playlists_artists, user_playlists_related_artists]],
 	[get_audio_analysis_by_playlist_stream, [user_playlists_full, user_playlists_audio_analysis, audio_analysis_errors]],
 	[get_audio_features_by_playlist, [user_playlists_full, user_playlists_audio_features, audio_features_errors]],
-	[get_extended_related_artists, ['spotify_user_data_set', 2, extended_related_artists]],
+	[get_extended_related_artists, ['spotify_toy_data_set', 3, extended_related_artists]],
 ];
 
 const recovery_scripts = [
@@ -90,6 +90,7 @@ const main = async () => {
 		err_flag = true;
 	}
 	console.log(err_flag ? chalk.red('Completed with errors.') : `[${chalk.green(path.resolve(results_dir))}] Toy set JSON fetch complete.`);
+	process.exit(0);
 };
 
 if (require.main === module) {
