@@ -49,4 +49,5 @@ async function run_tests(scripts) {
 module.exports = {
 	spotify: () => require('./spotify'),
 	nyt: () => require('./nytimes'),
+	musicbrainz: require('./musicbrainz'),
 };

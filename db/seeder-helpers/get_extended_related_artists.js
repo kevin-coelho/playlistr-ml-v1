@@ -96,6 +96,7 @@ const main = async (dataset_name, related_degrees, outfile) => {
 					if (result[1] && result[1].length < 1) {
 						console.log(`[${chalk.yellow(result[0])}] No related artists found.`);
 						failed_results.push(result[0]);
+						iter_count = iter_count + 1;
 						return Promise.resolve();
 					} else if (result[1]) {
 						const primaryArtist = result[0];
@@ -178,6 +179,7 @@ const main = async (dataset_name, related_degrees, outfile) => {
 						}));
 					} else {
 						failed_results.push(result[0]);
+						iter_count = iter_count + 1;
 						return Promise.resolve();
 					}
 				}), { concurrency: 1, }))
@@ -190,8 +192,12 @@ const main = async (dataset_name, related_degrees, outfile) => {
 				}
 				return Promise.resolve();
 			})
-			.then(() => console.log(`Loaded new artists: [${chalk.green(artistCount)}]. Loaded "related artist" rows: [${chalk.green(relatedCount)}]`))
-			.then(() => failed_results.length > 0 ? console.log(`Failed to load artists: [${chalk.red(failed_results.length)}]. Re-run script.`) : true);
+			.then(() => {
+				console.log('Closing writestream...');
+				out.end();
+				console.log(`Loaded new artists: [${chalk.green(artistCount)}]. Loaded "related artist" rows: [${chalk.green(relatedCount)}]`);
+				if (failed_results.length > 0) console.log(`Failed to load artists: [${chalk.red(failed_results.length)}]. Re-run script.`);
+			});
 	});
 };
 

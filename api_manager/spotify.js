@@ -101,6 +101,11 @@ function tokenRequestConfig() {
 }
 
 // interceptor to add token to the beginning of all requests
+/** Interceptor to add:
+ *
+ * 	Headers:
+ * 	Auth 			Bearer [...]
+ */
 const req_interceptor = (request) => {
 	if (api_instance.token_obj) {
 		const token_obj = api_instance.token_obj;
