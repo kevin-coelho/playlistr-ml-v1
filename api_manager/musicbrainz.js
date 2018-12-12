@@ -33,14 +33,15 @@ axiosRetry(api_instance, {
 /** Interceptor to add:
  *
  * 	Headers:
- * 	
+ *
  * 	Auth 			Bearer [...]
  * 	User-Agent 		Playlistr/0.0.1 ( https://www.kevincoelho.com/ )
- * 	
+ *
  */
 const req_interceptor = (request) => {
 	request.headers['User-Agent'] = api_instance.user_agent;
 	console.log(`${request.method.toUpperCase()}`, chalk.yellow(request.url || request.baseURL));
+	console.log(request);
 	return request;
 };
 
@@ -74,11 +75,9 @@ const res_err_interceptor = (err) => {
 	return Promise.reject(err);
 };
 
-// export an api_instance with valid spotify token and request interceptor (to refresh token as needed)
-module.exports = (() => {
-	console.log(chalk.yellow('Setting up MusicBrainz api instance...'));
-	api_instance.user_agent = user_agent_string;
-	api_instance.interceptors.request.use(req_interceptor);
-	api_instance.interceptors.response.use(res_interceptor, res_err_interceptor);
-	console.log(chalk.green('✔ MusicBrainz api instance ready'));
-})();
+console.log(chalk.yellow('Setting up MusicBrainz api instance...'));
+api_instance.user_agent = user_agent_string;
+api_instance.interceptors.request.use(req_interceptor);
+api_instance.interceptors.response.use(res_interceptor, res_err_interceptor);
+console.log(chalk.green('✔ MusicBrainz api instance ready'));
+module.exports = api_instance;

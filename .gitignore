@@ -5,6 +5,7 @@ api_manager/env
 get_toy_set/results
 get_nyt_music/results
 get_user_set/results
+get_musicbrainz/results
 
 # Logs
 logs
