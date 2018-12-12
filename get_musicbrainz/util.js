@@ -60,10 +60,45 @@ function getRecordingsByArtistArr(artists, fuzzy=false) {
 	};
 }
 
+function compileQuery(query_arr, fuzzy=false) {
+	fuzzy = fuzzy ? '~' : '';
+	return query_arr.map(query_obj => {
+		const terms = Object.keys(query_obj).map(key => `${key}:"${query_obj[key]}"${fuzzy}`).join(' AND ');
+		return `(${terms})`;
+	}).join(' OR ');
+}
+
+function getRecordings(query) {
+	return {
+		url: '/recording/',
+		method: 'get',
+		params: {
+			query,
+			limit: 100,
+		},
+	};
+}
+
+function getRecordingsByArtistTrack(artist_track_arr, fuzzy=false) {
+	fuzzy = fuzzy ? '~' : '';
+	const query = artist_track_arr.map(({ artist_name, track_name }) => `(artist:"${artist_name}"${fuzzy} AND recording:"${track_name}"${fuzzy})`).join(' OR ');
+	return {
+		url: '/recording/',
+		method: 'get',
+		params: {
+			query,
+			limit: artist_track_arr.length < 100 ? 100 : artist_track_arr.length,
+		},
+	};
+}
+
 module.exports = {
 	getTrackByIsrcConfig,
 	getReleaseGroupByName,
 	getReleasesByArtistName,
 	getReleasesByArtistArr,
 	getRecordingsByArtistArr,
+	getRecordingsByArtistTrack,
+	getRecordings,
+	compileQuery
 };
