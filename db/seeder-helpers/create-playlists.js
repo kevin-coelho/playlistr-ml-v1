@@ -59,6 +59,9 @@ module.exports = (data_file) => {
 				.then(console.log(`${chalk.green('Seed success')} Playlists seeded: ${chalk.green(playlists.length)}`));
 		},
 		down: (queryInterface, Sequelize) => {
+			console.log(`${chalk.red('Create playlist has no unseed due to dependencies. Remove all dependencies then re-run.')}`);
+			return Promise.resolve();
+			/*
 			const Op = Sequelize.Op;
 			return queryInterface.bulkDelete('Playlists', {
 				id: {
@@ -71,7 +74,7 @@ module.exports = (data_file) => {
 					},
 				}))
 				.then(() => console.log(`Removed playlists. Count: ${chalk.yellow(playlists.length)}`))
-				.then(() => console.log(`Removed users. Count: ${chalk.yellow(users.length)}`));
+				.then(() => console.log(`Removed users. Count: ${chalk.yellow(users.length)}`));*/
 		},
 	};
 };

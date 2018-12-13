@@ -1,6 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 	const Album = sequelize.define('Album', {
+		id: {
+			type: DataTypes.TEXT,
+			primaryKey: true,
+			allowNull: false,
+		},
 		album_type: DataTypes.TEXT,
 		href: DataTypes.TEXT,
 		label: DataTypes.TEXT,

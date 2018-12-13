@@ -9,6 +9,13 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.TEXT
 			},
+			albumId: {
+				type: Sequelize.TEXT,
+				references: {
+					model: 'Albums',
+					key: 'id',
+				},
+			},
 			href: {
 				type: Sequelize.TEXT
 			},

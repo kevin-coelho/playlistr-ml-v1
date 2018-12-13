@@ -23,6 +23,10 @@ module.exports = {
 		return queryInterface.bulkDelete('related_artist', {})
 			.then(() => console.log('Removed related artists.'))
 			.then(() => queryInterface.bulkDelete('Artists', {}))
-			.then(() => console.log('Removed artists.'));
+			.then(() => console.log('Removed artists.'))
+			.then(() => queryInterface.bulkDelete('Playlists', {}))
+			.then(() => console.log('Removed playlists.'))
+			.then(() => queryInterface.bulkDelete('Users'), {})
+			.then(() => console.log('Removed users.'));
 	},
 };
